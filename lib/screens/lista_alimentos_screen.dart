@@ -47,6 +47,137 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
     );
   }
 
+  void _mostrarDetalhesNutricionais(BuildContext context, Map<String, dynamic> alimento) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    _buildFoto(alimento['foto']),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            alimento['nome'] ?? 'Sem Nome',
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${alimento['categoria'] ?? ''} • ${alimento['tipo'] ?? ''}',
+                            style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+                          ),
+                          if (alimento['unidade_medida'] != null)
+                            Text(
+                              'Medição: ${alimento['unidade_medida']}',
+                              style: TextStyle(color: Colors.grey.shade600, fontSize: 14, fontStyle: FontStyle.italic),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(height: 30),
+                const Text('Informações Nutricionais', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _buildNutriRow('Calorias', alimento['calorias'], 'kcal'),
+                        _buildNutriRow('Proteínas', alimento['proteinas'], 'g'),
+                        _buildNutriRow('Carboidratos', alimento['carboidratos'], 'g'),
+                        _buildNutriRow('Gorduras Totais', alimento['gorduras_totais'], 'g'),
+                        _buildNutriRow('Sódio', alimento['sodio'], 'mg'),
+                        _buildNutriRow('Cálcio', alimento['calcio'], 'mg'),
+                        _buildNutriRow('Ferro', alimento['ferro'], 'mg'),
+                        if (alimento['nutri_score'] != null && alimento['nutri_score'].toString().isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Nutri-Score', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: _getNutriScoreColor(alimento['nutri_score']),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    alimento['nutri_score'].toString().toUpperCase(),
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildNutriRow(String label, dynamic value, String unit) {
+    if (value == null || value.toString().trim().isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 16, color: Colors.black87)),
+          Text('$value $unit', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        ],
+      ),
+    );
+  }
+
+  Color _getNutriScoreColor(String? score) {
+    switch (score?.toUpperCase()) {
+      case 'A': return Colors.green.shade800;
+      case 'B': return Colors.lightGreen;
+      case 'C': return Colors.yellow.shade700;
+      case 'D': return Colors.orange;
+      case 'E': return Colors.red;
+      default: return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -98,8 +229,12 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ListTile(
+                  onTap: () => _mostrarDetalhesNutricionais(context, alimento),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  leading: _buildFoto(foto),
+                  leading: GestureDetector(
+                    onTap: () => _mostrarDetalhesNutricionais(context, alimento),
+                    child: _buildFoto(foto),
+                  ),
                   title: Text(
                     nome,
                     style: const TextStyle(
@@ -107,11 +242,24 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
                       fontSize: 18,
                     ),
                   ),
-                  subtitle: Text(
-                    'Categoria: $categoria',
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                    ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Categoria: $categoria',
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                      if (alimento['unidade_medida'] != null)
+                        Text(
+                          'Medição: ${alimento['unidade_medida']}',
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                          ),
+                        ),
+                    ],
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.close, color: Colors.red),

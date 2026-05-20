@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../database/db_helper.dart';
@@ -19,14 +21,8 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   final TextEditingController _caloriasCtrl = TextEditingController();
   final TextEditingController _proteinasCtrl = TextEditingController();
   final TextEditingController _carboidratosCtrl = TextEditingController();
-  final TextEditingController _acucaresCtrl = TextEditingController();
   final TextEditingController _gordurasTotaisCtrl = TextEditingController();
-  final TextEditingController _gordurasSaturadasCtrl = TextEditingController();
-  final TextEditingController _gordutasTransCtrl = TextEditingController();
   final TextEditingController _sodioCtrl = TextEditingController();
-  final TextEditingController _fibrasCtrl = TextEditingController();
-  final TextEditingController _vitACtrl = TextEditingController();
-  final TextEditingController _vitCCtrl = TextEditingController();
   final TextEditingController _calcioCtrl = TextEditingController();
   final TextEditingController _ferroCtrl = TextEditingController();
 
@@ -40,6 +36,17 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   // --- Animação do painel expansível ---
   late AnimationController _expandController;
   late Animation<double> _expandAnimation;
+
+  // --- Controle de Unidade de Medida ---
+  List<Map<String, dynamic>> _unidadesDisponiveis = [
+    {'descricao': '100g', 'gramas': 100.0},
+    {'descricao': '1 porção', 'gramas': 100.0},
+    {'descricao': '1 unidade', 'gramas': 100.0},
+    {'descricao': 'g', 'gramas': 1.0},
+    {'descricao': 'ml', 'gramas': 1.0},
+  ];
+  Map<String, dynamic>? _unidadeSelecionada;
+  Map<String, double> _valoresPor100g = {};
 
   // --- Listas de opções ---
   final List<String> _categorias = ['Café', 'Almoço', 'Janta'];
@@ -73,6 +80,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
       parent: _expandController,
       curve: Curves.easeInOut,
     );
+    _unidadeSelecionada = _unidadesDisponiveis.first;
   }
 
   @override
@@ -82,14 +90,8 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
     _caloriasCtrl.dispose();
     _proteinasCtrl.dispose();
     _carboidratosCtrl.dispose();
-    _acucaresCtrl.dispose();
     _gordurasTotaisCtrl.dispose();
-    _gordurasSaturadasCtrl.dispose();
-    _gordutasTransCtrl.dispose();
     _sodioCtrl.dispose();
-    _fibrasCtrl.dispose();
-    _vitACtrl.dispose();
-    _vitCCtrl.dispose();
     _calcioCtrl.dispose();
     _ferroCtrl.dispose();
     _expandController.dispose();
@@ -97,12 +99,109 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   }
 
   // =========================================================
-  // LÓGICA DA API OPEN FOOD FACTS (corrigida para v3)
+  // LÓGICA DE BUSCA (TACO + API)
   // =========================================================
   Future<void> _buscarDadosDaApi(String nome) async {
     if (nome.trim().isEmpty) return;
     setState(() => _isLoading = true);
 
+    try {
+      // 1. Tenta buscar no arquivo TACO local primeiro
+      final String jsonString =
+          await rootBundle.loadString('lib/database/taco_alimentos.json');
+      final Map<String, dynamic> jsonData = jsonDecode(jsonString);
+      final List<dynamic> alimentosTaco = jsonData['alimentos'];
+
+      final alimentoEncontrado = alimentosTaco.firstWhere(
+        (item) =>
+            item['nome'].toString().toLowerCase().contains(nome.toLowerCase()),
+        orElse: () => null,
+      );
+
+      if (alimentoEncontrado != null) {
+        setState(() {
+          _nomeController.text = alimentoEncontrado['nome'];
+
+          final String catTaco =
+              alimentoEncontrado['categoria']?.toString().trim() ?? '';
+          if (_categorias.contains(catTaco)) {
+            _categoriaSelecionada = catTaco;
+          }
+
+          _autoMapearTipo([catTaco]);
+
+          _nutriScore = null;
+
+          _valoresPor100g = {
+            'calorias':
+                (alimentoEncontrado['energia_kcal'] as num?)?.toDouble() ?? 0,
+            'proteinas':
+                (alimentoEncontrado['proteina_g'] as num?)?.toDouble() ?? 0,
+            'carboidratos':
+                (alimentoEncontrado['carboidrato_g'] as num?)?.toDouble() ?? 0,
+            'gorduras_totais':
+                (alimentoEncontrado['gordura_g'] as num?)?.toDouble() ?? 0,
+            'sodio': (alimentoEncontrado['sodio_mg'] as num?)?.toDouble() ?? 0,
+            'calcio':
+                (alimentoEncontrado['calcio_mg'] as num?)?.toDouble() ?? 0,
+            'ferro': (alimentoEncontrado['ferro_mg'] as num?)?.toDouble() ?? 0,
+          };
+
+          _preencherCampoNutricional(
+              _caloriasCtrl, _valoresPor100g['calorias']);
+          _preencherCampoNutricional(
+              _proteinasCtrl, _valoresPor100g['proteinas']);
+          _preencherCampoNutricional(
+              _carboidratosCtrl, _valoresPor100g['carboidratos']);
+          _preencherCampoNutricional(
+              _gordurasTotaisCtrl, _valoresPor100g['gorduras_totais']);
+          _preencherCampoNutricional(_sodioCtrl, _valoresPor100g['sodio']);
+          _preencherCampoNutricional(_calcioCtrl, _valoresPor100g['calcio']);
+          _preencherCampoNutricional(_ferroCtrl, _valoresPor100g['ferro']);
+
+          if (alimentoEncontrado['unidades'] != null) {
+            final List<dynamic> unidadesOriginais =
+                alimentoEncontrado['unidades'];
+            _unidadesDisponiveis = [];
+            final Set<String> descricoesVistas = {'100g'};
+            _unidadesDisponiveis.add({'descricao': '100g', 'gramas': 100.0});
+
+            for (var u in unidadesOriginais) {
+              if (u['descricao'] != null) {
+                String desc = u['descricao'].toString().trim();
+                if (!descricoesVistas.contains(desc) && desc.isNotEmpty) {
+                  descricoesVistas.add(desc);
+                  _unidadesDisponiveis.add({
+                    'descricao': desc,
+                    'gramas': (u['gramas'] as num).toDouble()
+                  });
+                }
+              }
+            }
+          } else {
+            _unidadesDisponiveis = [
+              {'descricao': '100g', 'gramas': 100.0},
+              {'descricao': 'g', 'gramas': 1.0},
+              {'descricao': 'ml', 'gramas': 1.0},
+            ];
+          }
+          _unidadeSelecionada = _unidadesDisponiveis.first;
+
+          if (!_mostrarDetalhes) {
+            _mostrarDetalhes = true;
+            _expandController.forward();
+          }
+        });
+
+        _mostrarSnack('✅ Dados importados do TACO com sucesso!');
+        setState(() => _isLoading = false);
+        return;
+      }
+    } catch (e) {
+      debugPrint('Erro ao ler TACO local: $e');
+    }
+
+    // 2. Se não achou no TACO, tenta na API
     try {
       final configuration = ProductSearchQueryConfiguration(
         parametersList: [
@@ -130,49 +229,53 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
         final produto = result.products!.first;
 
         setState(() {
-          // Campos básicos
           _nomeController.text = produto.productName ?? _nomeController.text;
           _fotoController.text = produto.imageFrontUrl ?? '';
 
-          // Mapeamento automático de tipo pelas tags de categoria
           final tags = produto.categoriesTags ?? [];
           _autoMapearTipo(tags);
 
-          // Nutri-Score
           _nutriScore = produto.nutriscore?.toUpperCase();
 
-          // Campos nutricionais (por 100g)
           final n = produto.nutriments;
           if (n != null) {
-            _preencherCampoNutricional(_caloriasCtrl,
-                n.getValue(Nutrient.energyKCal, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_proteinasCtrl,
-                n.getValue(Nutrient.proteins, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_carboidratosCtrl,
-                n.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_acucaresCtrl,
-                n.getValue(Nutrient.sugars, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_gordurasTotaisCtrl,
-                n.getValue(Nutrient.fat, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_gordurasSaturadasCtrl,
-                n.getValue(Nutrient.saturatedFat, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_gordutasTransCtrl,
-                n.getValue(Nutrient.transFat, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_sodioCtrl,
-                n.getValue(Nutrient.sodium, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_fibrasCtrl,
-                n.getValue(Nutrient.fiber, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_vitACtrl,
-                n.getValue(Nutrient.vitaminA, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_vitCCtrl,
-                n.getValue(Nutrient.vitaminC, PerSize.oneHundredGrams));
-            _preencherCampoNutricional(_calcioCtrl,
-                n.getValue(Nutrient.calcium, PerSize.oneHundredGrams));
+            _valoresPor100g = {
+              'calorias':
+                  n.getValue(Nutrient.energyKCal, PerSize.oneHundredGrams) ?? 0,
+              'proteinas':
+                  n.getValue(Nutrient.proteins, PerSize.oneHundredGrams) ?? 0,
+              'carboidratos':
+                  n.getValue(Nutrient.carbohydrates, PerSize.oneHundredGrams) ??
+                      0,
+              'gorduras_totais':
+                  n.getValue(Nutrient.fat, PerSize.oneHundredGrams) ?? 0,
+              'sodio':
+                  n.getValue(Nutrient.sodium, PerSize.oneHundredGrams) ?? 0,
+              'calcio':
+                  n.getValue(Nutrient.calcium, PerSize.oneHundredGrams) ?? 0,
+              'ferro': n.getValue(Nutrient.iron, PerSize.oneHundredGrams) ?? 0,
+            };
+
             _preencherCampoNutricional(
-                _ferroCtrl, n.getValue(Nutrient.iron, PerSize.oneHundredGrams));
+                _caloriasCtrl, _valoresPor100g['calorias']);
+            _preencherCampoNutricional(
+                _proteinasCtrl, _valoresPor100g['proteinas']);
+            _preencherCampoNutricional(
+                _carboidratosCtrl, _valoresPor100g['carboidratos']);
+            _preencherCampoNutricional(
+                _gordurasTotaisCtrl, _valoresPor100g['gorduras_totais']);
+            _preencherCampoNutricional(_sodioCtrl, _valoresPor100g['sodio']);
+            _preencherCampoNutricional(_calcioCtrl, _valoresPor100g['calcio']);
+            _preencherCampoNutricional(_ferroCtrl, _valoresPor100g['ferro']);
           }
 
-          // Abre o painel automaticamente ao receber dados
+          _unidadesDisponiveis = [
+            {'descricao': '100g', 'gramas': 100.0},
+            {'descricao': 'g', 'gramas': 1.0},
+            {'descricao': 'ml', 'gramas': 1.0},
+          ];
+          _unidadeSelecionada = _unidadesDisponiveis.first;
+
           if (!_mostrarDetalhes) {
             _mostrarDetalhes = true;
             _expandController.forward();
@@ -230,7 +333,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
     };
 
     for (String tag in tags) {
-      final tagLow = tag.toLowerCase();
+      final tagLow = tag.toLowerCase().trim();
       for (var entry in mapeamento.entries) {
         for (String palavra in entry.value) {
           if (tagLow.contains(palavra)) {
@@ -248,7 +351,6 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
         .showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
-  // =========================================================
   // SALVAR NO BANCO (com dados nutricionais)
   // =========================================================
   Future<void> _salvarAlimento() async {
@@ -270,17 +372,12 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
       'calorias': parseDouble(_caloriasCtrl),
       'proteinas': parseDouble(_proteinasCtrl),
       'carboidratos': parseDouble(_carboidratosCtrl),
-      'acucares': parseDouble(_acucaresCtrl),
       'gorduras_totais': parseDouble(_gordurasTotaisCtrl),
-      'gorduras_saturadas': parseDouble(_gordurasSaturadasCtrl),
-      'gorduras_trans': parseDouble(_gordutasTransCtrl),
       'sodio': parseDouble(_sodioCtrl),
-      'fibras': parseDouble(_fibrasCtrl),
-      'vitamina_a': parseDouble(_vitACtrl),
-      'vitamina_c': parseDouble(_vitCCtrl),
       'calcio': parseDouble(_calcioCtrl),
       'ferro': parseDouble(_ferroCtrl),
       'nutri_score': _nutriScore,
+      'unidade_medida': _unidadeSelecionada?['descricao'] ?? '100g',
     };
 
     await DatabaseHelper().insertAlimento(novoAlimento);
@@ -448,7 +545,53 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
                   .toList(),
               onChanged: (val) => setState(() => _tipoSelecionado = val),
             ),
-            const SizedBox(height: 24),
+            // --- Dropdown Unidade de Medida ---
+            if (_unidadesDisponiveis.isNotEmpty) ...[
+              DropdownButtonFormField<Map<String, dynamic>>(
+                decoration: InputDecoration(
+                  labelText: 'Unidade de Medida (Referência)',
+                  labelStyle: TextStyle(color: purplePrimary),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: purplePrimary, width: 2)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: purplePrimary, width: 2)),
+                  border: const OutlineInputBorder(),
+                ),
+                initialValue: _unidadeSelecionada,
+                items: _unidadesDisponiveis.map((u) {
+                  return DropdownMenuItem<Map<String, dynamic>>(
+                    value: u,
+                    child: Text(u['descricao']),
+                  );
+                }).toList(),
+                onChanged: (val) {
+                  if (val != null) {
+                    setState(() {
+                      _unidadeSelecionada = val;
+                      if (_valoresPor100g.isNotEmpty) {
+                        double multiplier =
+                            (val['gramas'] as num).toDouble() / 100.0;
+                        _preencherCampoNutricional(_caloriasCtrl,
+                            _valoresPor100g['calorias']! * multiplier);
+                        _preencherCampoNutricional(_proteinasCtrl,
+                            _valoresPor100g['proteinas']! * multiplier);
+                        _preencherCampoNutricional(_carboidratosCtrl,
+                            _valoresPor100g['carboidratos']! * multiplier);
+                        _preencherCampoNutricional(_gordurasTotaisCtrl,
+                            _valoresPor100g['gorduras_totais']! * multiplier);
+                        _preencherCampoNutricional(
+                            _sodioCtrl, _valoresPor100g['sodio']! * multiplier);
+                        _preencherCampoNutricional(_calcioCtrl,
+                            _valoresPor100g['calcio']! * multiplier);
+                        _preencherCampoNutricional(
+                            _ferroCtrl, _valoresPor100g['ferro']! * multiplier);
+                      }
+                    });
+                  }
+                },
+              ),
+              const SizedBox(height: 24),
+            ],
 
             // =========================================================
             // SEÇÃO DETALHES NUTRICIONAIS
@@ -626,26 +769,14 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
             _campoNutricional(label: 'Proteínas', controller: _proteinasCtrl),
             _campoNutricional(
                 label: 'Carboidratos', controller: _carboidratosCtrl),
-            _campoNutricional(label: '↳ Açúcares', controller: _acucaresCtrl),
             _campoNutricional(
                 label: 'Gorduras Totais', controller: _gordurasTotaisCtrl),
-            _campoNutricional(
-                label: '↳ Gorduras Saturadas',
-                controller: _gordurasSaturadasCtrl),
-            _campoNutricional(
-                label: '↳ Gorduras Trans', controller: _gordutasTransCtrl),
           ]),
 
           // --- Micronutrientes ---
           _secaoNutricional('🧪 Micronutrientes', [
             _campoNutricional(
                 label: 'Sódio', controller: _sodioCtrl, unidade: 'mg'),
-            _campoNutricional(
-                label: 'Fibras Alimentares', controller: _fibrasCtrl),
-            _campoNutricional(
-                label: 'Vitamina A', controller: _vitACtrl, unidade: 'mcg'),
-            _campoNutricional(
-                label: 'Vitamina C', controller: _vitCCtrl, unidade: 'mg'),
             _campoNutricional(
                 label: 'Cálcio', controller: _calcioCtrl, unidade: 'mg'),
             _campoNutricional(

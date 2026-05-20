@@ -17,13 +17,14 @@ class DatabaseHelper {
   }
 
   // Inicializa e cria o banco de dados
+  // Inicializa e cria o banco de dados
   Future<Database> _initDatabase() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'nutri_app.db');
 
     return await openDatabase(
       path,
-      version: 2, // Incrementado para adicionar colunas nutricionais
+      version: 4, // Incrementado para simplificar colunas e corrigir salvamento
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -40,8 +41,25 @@ class DatabaseHelper {
         data_nascimento TEXT NOT NULL
       )
     ''');
+    
+    // Na inicialização do banco
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS taco_alimentos (
+        id INTEGER PRIMARY KEY,
+        nome TEXT NOT NULL,
+        categoria TEXT,
+        energia_kcal REAL,
+        proteina_g REAL,
+        carboidrato_g REAL,
+        gordura_total_g REAL,
+        fibra_g REAL,
+        sodio_mg REAL,
+        calcio_mg REAL,
+        ferro_mg REAL
+      )
+    ''');
 
-    // 2. Tabela de Alimentos (com campos nutricionais)
+    // 2. Tabela de Alimentos (com campos nutricionais simplificados)
     await db.execute('''
       CREATE TABLE alimentos(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,17 +70,12 @@ class DatabaseHelper {
         calorias REAL,
         proteinas REAL,
         carboidratos REAL,
-        acucares REAL,
         gorduras_totais REAL,
-        gorduras_saturadas REAL,
-        gorduras_trans REAL,
         sodio REAL,
-        fibras REAL,
-        vitamina_a REAL,
-        vitamina_c REAL,
         calcio REAL,
         ferro REAL,
-        nutri_score TEXT
+        nutri_score TEXT,
+        unidade_medida TEXT
       )
     ''');
 
@@ -107,6 +120,33 @@ class DatabaseHelper {
           'ALTER TABLE alimentos ADD COLUMN ${entry.key} ${entry.value}',
         );
       }
+    }
+    if (oldVersion < 3) {
+      await db.execute(
+        'ALTER TABLE alimentos ADD COLUMN unidade_medida TEXT',
+      );
+    }
+    if (oldVersion < 4) {
+      // Recria a tabela para limpar colunas e padronizar com a versão 4
+      await db.execute('DROP TABLE IF EXISTS alimentos');
+      await db.execute('''
+        CREATE TABLE alimentos(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nome TEXT NOT NULL,
+          foto TEXT,
+          categoria TEXT NOT NULL,
+          tipo TEXT NOT NULL,
+          calorias REAL,
+          proteinas REAL,
+          carboidratos REAL,
+          gorduras_totais REAL,
+          sodio REAL,
+          calcio REAL,
+          ferro REAL,
+          nutri_score TEXT,
+          unidade_medida TEXT
+        )
+      ''');
     }
   }
 

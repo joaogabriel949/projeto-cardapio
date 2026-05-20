@@ -1,0 +1,1877 @@
+{
+  "versao": "TACO 4a edicao - UNICAMP",
+  "unidades_globais": [
+    { "id": 1, "descricao": "grama", "sigla": "g" },
+    { "id": 2, "descricao": "colher de cha", "sigla": "col cha" },
+    { "id": 3, "descricao": "colher de sopa", "sigla": "col sopa" },
+    { "id": 4, "descricao": "xicara de cha", "sigla": "xic" },
+    { "id": 5, "descricao": "xicara de cafe", "sigla": "xic cafe" },
+    { "id": 6, "descricao": "unidade", "sigla": "un" },
+    { "id": 7, "descricao": "fatia", "sigla": "fatia" },
+    { "id": 8, "descricao": "concha", "sigla": "concha" },
+    { "id": 9, "descricao": "porcao", "sigla": "porcao" },
+    { "id": 10, "descricao": "copo", "sigla": "copo" },
+    { "id": 11, "descricao": "pedaco", "sigla": "pedaco" },
+    { "id": 12, "descricao": "filé", "sigla": "file" },
+    { "id": 13, "descricao": "mililitro", "sigla": "ml" },
+    { "id": 14, "descricao": "litro", "sigla": "L" }
+  ],
+  "alimentos": [
+    {
+      "id": 1,
+      "nome": "Arroz branco cozido",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 128,
+      "proteina_g": 2.5,
+      "carboidrato_g": 28.1,
+      "gordura_g": 0.2,
+      "fibra_g": 1.6,
+      "sodio_mg": 1,
+      "calcio_mg": 4,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara de cha", "gramas": 165 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "porcao (4 col sopa)", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Arroz integral cozido",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 124,
+      "proteina_g": 2.6,
+      "carboidrato_g": 25.8,
+      "gordura_g": 1.0,
+      "fibra_g": 2.7,
+      "sodio_mg": 1,
+      "calcio_mg": 8,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara de cha", "gramas": 165 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "porcao (4 col sopa)", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Arroz parboilizado cozido",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 131,
+      "proteina_g": 2.7,
+      "carboidrato_g": 28.4,
+      "gordura_g": 0.3,
+      "fibra_g": 1.4,
+      "sodio_mg": 1,
+      "calcio_mg": 5,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara de cha", "gramas": 165 },
+        { "descricao": "concha", "gramas": 80 }
+      ]
+    },
+    {
+      "id": 4,
+      "nome": "Feijao carioca cozido",
+      "categoria": "Leguminosas",
+      "energia_kcal": 76,
+      "proteina_g": 4.8,
+      "carboidrato_g": 13.6,
+      "gordura_g": 0.5,
+      "fibra_g": 8.5,
+      "sodio_mg": 2,
+      "calcio_mg": 27,
+      "ferro_mg": 1.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "xicara de cha", "gramas": 160 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 5,
+      "nome": "Feijao preto cozido",
+      "categoria": "Leguminosas",
+      "energia_kcal": 77,
+      "proteina_g": 4.5,
+      "carboidrato_g": 14.0,
+      "gordura_g": 0.5,
+      "fibra_g": 8.4,
+      "sodio_mg": 2,
+      "calcio_mg": 29,
+      "ferro_mg": 1.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "xicara de cha", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 6,
+      "nome": "Feijao verde cozido",
+      "categoria": "Leguminosas",
+      "energia_kcal": 28,
+      "proteina_g": 1.8,
+      "carboidrato_g": 4.3,
+      "gordura_g": 0.3,
+      "fibra_g": 2.0,
+      "sodio_mg": 1,
+      "calcio_mg": 36,
+      "ferro_mg": 0.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "concha", "gramas": 80 }
+      ]
+    },
+    {
+      "id": 7,
+      "nome": "Lentilha cozida",
+      "categoria": "Leguminosas",
+      "energia_kcal": 93,
+      "proteina_g": 6.3,
+      "carboidrato_g": 16.3,
+      "gordura_g": 0.5,
+      "fibra_g": 3.7,
+      "sodio_mg": 2,
+      "calcio_mg": 19,
+      "ferro_mg": 2.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "xicara de cha", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 8,
+      "nome": "Grao de bico cozido",
+      "categoria": "Leguminosas",
+      "energia_kcal": 130,
+      "proteina_g": 7.0,
+      "carboidrato_g": 21.2,
+      "gordura_g": 2.5,
+      "fibra_g": 5.0,
+      "sodio_mg": 6,
+      "calcio_mg": 45,
+      "ferro_mg": 2.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara de cha", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 9,
+      "nome": "Soja cozida",
+      "categoria": "Leguminosas",
+      "energia_kcal": 141,
+      "proteina_g": 12.9,
+      "carboidrato_g": 11.5,
+      "gordura_g": 5.7,
+      "fibra_g": 5.4,
+      "sodio_mg": 1,
+      "calcio_mg": 85,
+      "ferro_mg": 3.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara de cha", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 10,
+      "nome": "Ervilha cozida",
+      "categoria": "Leguminosas",
+      "energia_kcal": 74,
+      "proteina_g": 5.6,
+      "carboidrato_g": 11.8,
+      "gordura_g": 0.4,
+      "fibra_g": 5.6,
+      "sodio_mg": 3,
+      "calcio_mg": 22,
+      "ferro_mg": 1.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 20 },
+        { "descricao": "xicara de cha", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 11,
+      "nome": "Frango peito grelhado sem pele",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 163,
+      "proteina_g": 31.5,
+      "carboidrato_g": 0,
+      "gordura_g": 3.2,
+      "fibra_g": 0,
+      "sodio_mg": 74,
+      "calcio_mg": 5,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file pequeno", "gramas": 80 },
+        { "descricao": "file medio", "gramas": 130 },
+        { "descricao": "file grande", "gramas": 180 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 12,
+      "nome": "Frango coxa cozida sem pele",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 180,
+      "proteina_g": 26.0,
+      "carboidrato_g": 0,
+      "gordura_g": 8.1,
+      "fibra_g": 0,
+      "sodio_mg": 82,
+      "calcio_mg": 10,
+      "ferro_mg": 0.9,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 70 },
+        { "descricao": "unidade media", "gramas": 100 },
+        { "descricao": "unidade grande", "gramas": 130 }
+      ]
+    },
+    {
+      "id": 13,
+      "nome": "Carne bovina patinho cozido",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 219,
+      "proteina_g": 31.5,
+      "carboidrato_g": 0,
+      "gordura_g": 10.1,
+      "fibra_g": 0,
+      "sodio_mg": 59,
+      "calcio_mg": 5,
+      "ferro_mg": 3.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "porcao pequena", "gramas": 80 },
+        { "descricao": "porcao media", "gramas": 120 },
+        { "descricao": "porcao grande", "gramas": 180 }
+      ]
+    },
+    {
+      "id": 14,
+      "nome": "Carne bovina alcatra grelhada",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 185,
+      "proteina_g": 30.5,
+      "carboidrato_g": 0,
+      "gordura_g": 6.7,
+      "fibra_g": 0,
+      "sodio_mg": 55,
+      "calcio_mg": 7,
+      "ferro_mg": 2.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file pequeno", "gramas": 100 },
+        { "descricao": "file medio", "gramas": 150 },
+        { "descricao": "file grande", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 15,
+      "nome": "Carne bovina acem cozido",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 226,
+      "proteina_g": 27.9,
+      "carboidrato_g": 0,
+      "gordura_g": 12.5,
+      "fibra_g": 0,
+      "sodio_mg": 62,
+      "calcio_mg": 9,
+      "ferro_mg": 2.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 16,
+      "nome": "Carne bovina contrafile grelhado",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 263,
+      "proteina_g": 27.5,
+      "carboidrato_g": 0,
+      "gordura_g": 16.8,
+      "fibra_g": 0,
+      "sodio_mg": 58,
+      "calcio_mg": 6,
+      "ferro_mg": 2.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file medio", "gramas": 150 },
+        { "descricao": "file grande", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 17,
+      "nome": "Carne suina pernil assado",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 269,
+      "proteina_g": 24.5,
+      "carboidrato_g": 0,
+      "gordura_g": 18.7,
+      "fibra_g": 0,
+      "sodio_mg": 70,
+      "calcio_mg": 8,
+      "ferro_mg": 1.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 40 },
+        { "descricao": "fatia grossa", "gramas": 80 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 18,
+      "nome": "Peixe tilapia grelhada",
+      "categoria": "Pescados",
+      "energia_kcal": 129,
+      "proteina_g": 26.2,
+      "carboidrato_g": 0,
+      "gordura_g": 2.7,
+      "fibra_g": 0,
+      "sodio_mg": 52,
+      "calcio_mg": 14,
+      "ferro_mg": 0.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file pequeno", "gramas": 80 },
+        { "descricao": "file medio", "gramas": 130 },
+        { "descricao": "file grande", "gramas": 180 }
+      ]
+    },
+    {
+      "id": 19,
+      "nome": "Peixe sardinha em lata",
+      "categoria": "Pescados",
+      "energia_kcal": 208,
+      "proteina_g": 24.1,
+      "carboidrato_g": 0,
+      "gordura_g": 12.0,
+      "fibra_g": 0,
+      "sodio_mg": 400,
+      "calcio_mg": 354,
+      "ferro_mg": 2.7,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 25 },
+        { "descricao": "unidade media", "gramas": 35 },
+        { "descricao": "lata", "gramas": 125 }
+      ]
+    },
+    {
+      "id": 20,
+      "nome": "Atum em lata (agua)",
+      "categoria": "Pescados",
+      "energia_kcal": 109,
+      "proteina_g": 23.5,
+      "carboidrato_g": 0,
+      "gordura_g": 1.6,
+      "fibra_g": 0,
+      "sodio_mg": 320,
+      "calcio_mg": 9,
+      "ferro_mg": 0.9,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "lata pequena", "gramas": 120 },
+        { "descricao": "lata grande", "gramas": 170 }
+      ]
+    },
+    {
+      "id": 21,
+      "nome": "Ovo de galinha cozido",
+      "categoria": "Ovos",
+      "energia_kcal": 146,
+      "proteina_g": 13.3,
+      "carboidrato_g": 0.6,
+      "gordura_g": 9.5,
+      "fibra_g": 0,
+      "sodio_mg": 137,
+      "calcio_mg": 52,
+      "ferro_mg": 1.7,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 40 },
+        { "descricao": "unidade media", "gramas": 50 },
+        { "descricao": "unidade grande", "gramas": 60 }
+      ]
+    },
+    {
+      "id": 22,
+      "nome": "Ovo de galinha mexido",
+      "categoria": "Ovos",
+      "energia_kcal": 160,
+      "proteina_g": 11.5,
+      "carboidrato_g": 0.9,
+      "gordura_g": 12.0,
+      "fibra_g": 0,
+      "sodio_mg": 140,
+      "calcio_mg": 55,
+      "ferro_mg": 1.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 50 },
+        { "descricao": "porcao 2 ovos", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 23,
+      "nome": "Leite integral",
+      "categoria": "Laticinios",
+      "energia_kcal": 61,
+      "proteina_g": 3.2,
+      "carboidrato_g": 4.7,
+      "gordura_g": 3.2,
+      "fibra_g": 0,
+      "sodio_mg": 47,
+      "calcio_mg": 113,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "copo (200ml)", "gramas": 200 },
+        { "descricao": "xicara de cha", "gramas": 185 },
+        { "descricao": "colher de sopa", "gramas": 15 }
+      ]
+    },
+    {
+      "id": 24,
+      "nome": "Leite desnatado",
+      "categoria": "Laticinios",
+      "energia_kcal": 35,
+      "proteina_g": 3.4,
+      "carboidrato_g": 4.9,
+      "gordura_g": 0.1,
+      "fibra_g": 0,
+      "sodio_mg": 50,
+      "calcio_mg": 120,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "copo (200ml)", "gramas": 200 },
+        { "descricao": "xicara de cha", "gramas": 185 }
+      ]
+    },
+    {
+      "id": 25,
+      "nome": "Iogurte natural integral",
+      "categoria": "Laticinios",
+      "energia_kcal": 66,
+      "proteina_g": 3.5,
+      "carboidrato_g": 4.9,
+      "gordura_g": 3.5,
+      "fibra_g": 0,
+      "sodio_mg": 46,
+      "calcio_mg": 120,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "copo (170g)", "gramas": 170 },
+        { "descricao": "colher de sopa", "gramas": 20 }
+      ]
+    },
+    {
+      "id": 26,
+      "nome": "Queijo minas frescal",
+      "categoria": "Laticinios",
+      "energia_kcal": 264,
+      "proteina_g": 17.4,
+      "carboidrato_g": 3.2,
+      "gordura_g": 20.2,
+      "fibra_g": 0,
+      "sodio_mg": 430,
+      "calcio_mg": 579,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 20 },
+        { "descricao": "fatia media", "gramas": 30 },
+        { "descricao": "fatia grossa", "gramas": 50 }
+      ]
+    },
+    {
+      "id": 27,
+      "nome": "Queijo coalho grelhado",
+      "categoria": "Laticinios",
+      "energia_kcal": 360,
+      "proteina_g": 23.0,
+      "carboidrato_g": 1.0,
+      "gordura_g": 29.0,
+      "fibra_g": 0,
+      "sodio_mg": 650,
+      "calcio_mg": 700,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia", "gramas": 30 },
+        { "descricao": "espeticao", "gramas": 60 }
+      ]
+    },
+    {
+      "id": 28,
+      "nome": "Queijo prato",
+      "categoria": "Laticinios",
+      "energia_kcal": 358,
+      "proteina_g": 22.4,
+      "carboidrato_g": 2.1,
+      "gordura_g": 28.9,
+      "fibra_g": 0,
+      "sodio_mg": 597,
+      "calcio_mg": 720,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 15 },
+        { "descricao": "fatia media", "gramas": 25 }
+      ]
+    },
+    {
+      "id": 29,
+      "nome": "Requeijao cremoso",
+      "categoria": "Laticinios",
+      "energia_kcal": 261,
+      "proteina_g": 9.3,
+      "carboidrato_g": 3.0,
+      "gordura_g": 24.0,
+      "fibra_g": 0,
+      "sodio_mg": 473,
+      "calcio_mg": 206,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 20 },
+        { "descricao": "colher de cha", "gramas": 7 }
+      ]
+    },
+    {
+      "id": 30,
+      "nome": "Banana prata",
+      "categoria": "Frutas",
+      "energia_kcal": 98,
+      "proteina_g": 1.3,
+      "carboidrato_g": 26.0,
+      "gordura_g": 0.1,
+      "fibra_g": 2.0,
+      "sodio_mg": 2,
+      "calcio_mg": 8,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 80 },
+        { "descricao": "unidade media", "gramas": 100 },
+        { "descricao": "unidade grande", "gramas": 130 }
+      ]
+    },
+    {
+      "id": 31,
+      "nome": "Banana nanica",
+      "categoria": "Frutas",
+      "energia_kcal": 92,
+      "proteina_g": 1.4,
+      "carboidrato_g": 23.8,
+      "gordura_g": 0.1,
+      "fibra_g": 1.9,
+      "sodio_mg": 2,
+      "calcio_mg": 7,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 70 },
+        { "descricao": "unidade media", "gramas": 90 },
+        { "descricao": "unidade grande", "gramas": 120 }
+      ]
+    },
+    {
+      "id": 32,
+      "nome": "Maca",
+      "categoria": "Frutas",
+      "energia_kcal": 56,
+      "proteina_g": 0.3,
+      "carboidrato_g": 15.2,
+      "gordura_g": 0.1,
+      "fibra_g": 2.0,
+      "sodio_mg": 1,
+      "calcio_mg": 4,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 130 },
+        { "descricao": "unidade media", "gramas": 180 },
+        { "descricao": "unidade grande", "gramas": 220 }
+      ]
+    },
+    {
+      "id": 33,
+      "nome": "Laranja pera",
+      "categoria": "Frutas",
+      "energia_kcal": 37,
+      "proteina_g": 1.0,
+      "carboidrato_g": 8.9,
+      "gordura_g": 0.1,
+      "fibra_g": 0.8,
+      "sodio_mg": 1,
+      "calcio_mg": 33,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 130 },
+        { "descricao": "unidade media", "gramas": 180 },
+        { "descricao": "unidade grande", "gramas": 220 }
+      ]
+    },
+    {
+      "id": 34,
+      "nome": "Mamao papaia",
+      "categoria": "Frutas",
+      "energia_kcal": 45,
+      "proteina_g": 0.5,
+      "carboidrato_g": 11.4,
+      "gordura_g": 0.1,
+      "fibra_g": 1.8,
+      "sodio_mg": 3,
+      "calcio_mg": 20,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia media", "gramas": 150 },
+        { "descricao": "fatia grande", "gramas": 250 },
+        { "descricao": "unidade inteira", "gramas": 400 }
+      ]
+    },
+    {
+      "id": 35,
+      "nome": "Manga tommy",
+      "categoria": "Frutas",
+      "energia_kcal": 64,
+      "proteina_g": 0.4,
+      "carboidrato_g": 14.0,
+      "gordura_g": 0.6,
+      "fibra_g": 1.6,
+      "sodio_mg": 2,
+      "calcio_mg": 9,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 300 }
+      ]
+    },
+    {
+      "id": 36,
+      "nome": "Abacaxi",
+      "categoria": "Frutas",
+      "energia_kcal": 48,
+      "proteina_g": 0.9,
+      "carboidrato_g": 12.3,
+      "gordura_g": 0.1,
+      "fibra_g": 1.0,
+      "sodio_mg": 1,
+      "calcio_mg": 22,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 80 },
+        { "descricao": "fatia media", "gramas": 120 },
+        { "descricao": "fatia grossa", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 37,
+      "nome": "Morango",
+      "categoria": "Frutas",
+      "energia_kcal": 30,
+      "proteina_g": 0.8,
+      "carboidrato_g": 6.8,
+      "gordura_g": 0.3,
+      "fibra_g": 1.6,
+      "sodio_mg": 1,
+      "calcio_mg": 14,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 10 },
+        { "descricao": "unidade media", "gramas": 15 },
+        { "descricao": "xicara de cha", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 38,
+      "nome": "Uva italia",
+      "categoria": "Frutas",
+      "energia_kcal": 69,
+      "proteina_g": 0.6,
+      "carboidrato_g": 17.9,
+      "gordura_g": 0.1,
+      "fibra_g": 0.9,
+      "sodio_mg": 1,
+      "calcio_mg": 9,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 8 },
+        { "descricao": "cacho pequeno", "gramas": 100 },
+        { "descricao": "xicara de cha", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 39,
+      "nome": "Melancia",
+      "categoria": "Frutas",
+      "energia_kcal": 33,
+      "proteina_g": 0.7,
+      "carboidrato_g": 7.4,
+      "gordura_g": 0.2,
+      "fibra_g": 0.3,
+      "sodio_mg": 2,
+      "calcio_mg": 8,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 200 },
+        { "descricao": "fatia media", "gramas": 300 },
+        { "descricao": "pedaco", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 40,
+      "nome": "Melao",
+      "categoria": "Frutas",
+      "energia_kcal": 29,
+      "proteina_g": 0.6,
+      "carboidrato_g": 7.5,
+      "gordura_g": 0.1,
+      "fibra_g": 0.3,
+      "sodio_mg": 11,
+      "calcio_mg": 8,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia media", "gramas": 200 },
+        { "descricao": "pedaco", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 41,
+      "nome": "Abacate",
+      "categoria": "Frutas",
+      "energia_kcal": 96,
+      "proteina_g": 1.2,
+      "carboidrato_g": 6.0,
+      "gordura_g": 8.4,
+      "fibra_g": 6.3,
+      "sodio_mg": 3,
+      "calcio_mg": 9,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "metade", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 42,
+      "nome": "Tomate",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 15,
+      "proteina_g": 1.1,
+      "carboidrato_g": 3.1,
+      "gordura_g": 0.2,
+      "fibra_g": 1.2,
+      "sodio_mg": 3,
+      "calcio_mg": 11,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 80 },
+        { "descricao": "unidade media", "gramas": 120 },
+        { "descricao": "unidade grande", "gramas": 160 },
+        { "descricao": "fatia", "gramas": 20 }
+      ]
+    },
+    {
+      "id": 43,
+      "nome": "Cenoura crua",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 34,
+      "proteina_g": 1.3,
+      "carboidrato_g": 7.7,
+      "gordura_g": 0.2,
+      "fibra_g": 3.2,
+      "sodio_mg": 48,
+      "calcio_mg": 35,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 60 },
+        { "descricao": "unidade media", "gramas": 100 },
+        { "descricao": "unidade grande", "gramas": 140 },
+        { "descricao": "colher de sopa ralada", "gramas": 15 }
+      ]
+    },
+    {
+      "id": 44,
+      "nome": "Batata inglesa cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 52,
+      "proteina_g": 1.2,
+      "carboidrato_g": 11.9,
+      "gordura_g": 0.1,
+      "fibra_g": 1.3,
+      "sodio_mg": 4,
+      "calcio_mg": 5,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 150 },
+        { "descricao": "unidade grande", "gramas": 200 },
+        { "descricao": "colher de sopa", "gramas": 30 }
+      ]
+    },
+    {
+      "id": 45,
+      "nome": "Batata doce cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 77,
+      "proteina_g": 0.6,
+      "carboidrato_g": 18.4,
+      "gordura_g": 0.1,
+      "fibra_g": 2.2,
+      "sodio_mg": 5,
+      "calcio_mg": 29,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 150 },
+        { "descricao": "colher de sopa", "gramas": 30 }
+      ]
+    },
+    {
+      "id": 46,
+      "nome": "Mandioca cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 125,
+      "proteina_g": 0.6,
+      "carboidrato_g": 30.1,
+      "gordura_g": 0.3,
+      "fibra_g": 1.9,
+      "sodio_mg": 6,
+      "calcio_mg": 16,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "pedaco medio", "gramas": 100 },
+        { "descricao": "pedaco grande", "gramas": 150 },
+        { "descricao": "porcao", "gramas": 80 }
+      ]
+    },
+    {
+      "id": 47,
+      "nome": "Inhame cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 98,
+      "proteina_g": 1.5,
+      "carboidrato_g": 23.0,
+      "gordura_g": 0.1,
+      "fibra_g": 1.8,
+      "sodio_mg": 7,
+      "calcio_mg": 18,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "pedaco medio", "gramas": 100 },
+        { "descricao": "colher de sopa", "gramas": 30 }
+      ]
+    },
+    {
+      "id": 48,
+      "nome": "Aipim cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 125,
+      "proteina_g": 0.6,
+      "carboidrato_g": 30.1,
+      "gordura_g": 0.3,
+      "fibra_g": 1.9,
+      "sodio_mg": 6,
+      "calcio_mg": 16,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "pedaco", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 49,
+      "nome": "Abobora cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 26,
+      "proteina_g": 1.3,
+      "carboidrato_g": 5.0,
+      "gordura_g": 0.1,
+      "fibra_g": 0.5,
+      "sodio_mg": 1,
+      "calcio_mg": 19,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 30 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 50,
+      "nome": "Chuchu cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 18,
+      "proteina_g": 0.9,
+      "carboidrato_g": 3.6,
+      "gordura_g": 0.1,
+      "fibra_g": 0.9,
+      "sodio_mg": 1,
+      "calcio_mg": 20,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 30 },
+        { "descricao": "metade", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 51,
+      "nome": "Brocolis cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 34,
+      "proteina_g": 3.7,
+      "carboidrato_g": 4.4,
+      "gordura_g": 0.4,
+      "fibra_g": 3.0,
+      "sodio_mg": 18,
+      "calcio_mg": 57,
+      "ferro_mg": 1.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "buque", "gramas": 30 },
+        { "descricao": "porcao", "gramas": 100 },
+        { "descricao": "xicara", "gramas": 140 }
+      ]
+    },
+    {
+      "id": 52,
+      "nome": "Couve manteiga crua",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 24,
+      "proteina_g": 3.0,
+      "carboidrato_g": 2.9,
+      "gordura_g": 0.4,
+      "fibra_g": 3.3,
+      "sodio_mg": 13,
+      "calcio_mg": 220,
+      "ferro_mg": 1.9,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa picada", "gramas": 10 },
+        { "descricao": "folha", "gramas": 25 },
+        { "descricao": "xicara", "gramas": 70 }
+      ]
+    },
+    {
+      "id": 53,
+      "nome": "Espinafre cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 19,
+      "proteina_g": 2.9,
+      "carboidrato_g": 2.4,
+      "gordura_g": 0.3,
+      "fibra_g": 2.6,
+      "sodio_mg": 49,
+      "calcio_mg": 140,
+      "ferro_mg": 2.9,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 20 },
+        { "descricao": "xicara", "gramas": 120 }
+      ]
+    },
+    {
+      "id": 54,
+      "nome": "Alface crespa crua",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 11,
+      "proteina_g": 1.3,
+      "carboidrato_g": 1.7,
+      "gordura_g": 0.2,
+      "fibra_g": 1.7,
+      "sodio_mg": 7,
+      "calcio_mg": 35,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "folha", "gramas": 10 },
+        { "descricao": "porcao salada", "gramas": 50 }
+      ]
+    },
+    {
+      "id": 55,
+      "nome": "Pepino",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 10,
+      "proteina_g": 0.7,
+      "carboidrato_g": 2.2,
+      "gordura_g": 0.1,
+      "fibra_g": 0.5,
+      "sodio_mg": 2,
+      "calcio_mg": 14,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia", "gramas": 15 },
+        { "descricao": "metade", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 56,
+      "nome": "Beterraba cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 29,
+      "proteina_g": 1.6,
+      "carboidrato_g": 5.9,
+      "gordura_g": 0.1,
+      "fibra_g": 2.9,
+      "sodio_mg": 74,
+      "calcio_mg": 16,
+      "ferro_mg": 0.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia", "gramas": 20 },
+        { "descricao": "unidade media", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 57,
+      "nome": "Milho verde cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 86,
+      "proteina_g": 3.2,
+      "carboidrato_g": 18.7,
+      "gordura_g": 1.0,
+      "fibra_g": 1.9,
+      "sodio_mg": 1,
+      "calcio_mg": 2,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "espiga pequena", "gramas": 90 },
+        { "descricao": "espiga media", "gramas": 130 }
+      ]
+    },
+    {
+      "id": 58,
+      "nome": "Quiabo cozido",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 25,
+      "proteina_g": 1.9,
+      "carboidrato_g": 4.6,
+      "gordura_g": 0.2,
+      "fibra_g": 2.9,
+      "sodio_mg": 3,
+      "calcio_mg": 78,
+      "ferro_mg": 0.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 15 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 59,
+      "nome": "Berinjela cozida",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 16,
+      "proteina_g": 0.9,
+      "carboidrato_g": 2.6,
+      "gordura_g": 0.1,
+      "fibra_g": 2.9,
+      "sodio_mg": 2,
+      "calcio_mg": 10,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia", "gramas": 30 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 60,
+      "nome": "Pimentao verde",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 21,
+      "proteina_g": 1.0,
+      "carboidrato_g": 4.7,
+      "gordura_g": 0.2,
+      "fibra_g": 1.7,
+      "sodio_mg": 2,
+      "calcio_mg": 10,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 80 },
+        { "descricao": "unidade media", "gramas": 130 },
+        { "descricao": "tira", "gramas": 15 }
+      ]
+    },
+    {
+      "id": 61,
+      "nome": "Cebola crua",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 32,
+      "proteina_g": 1.2,
+      "carboidrato_g": 7.4,
+      "gordura_g": 0.1,
+      "fibra_g": 1.8,
+      "sodio_mg": 2,
+      "calcio_mg": 22,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 60 },
+        { "descricao": "unidade media", "gramas": 100 },
+        { "descricao": "colher de sopa picada", "gramas": 15 }
+      ]
+    },
+    {
+      "id": 62,
+      "nome": "Alho cru",
+      "categoria": "Hortalicas e verduras",
+      "energia_kcal": 130,
+      "proteina_g": 6.4,
+      "carboidrato_g": 28.0,
+      "gordura_g": 0.5,
+      "fibra_g": 2.1,
+      "sodio_mg": 7,
+      "calcio_mg": 36,
+      "ferro_mg": 1.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "dente pequeno", "gramas": 3 },
+        { "descricao": "dente medio", "gramas": 5 },
+        { "descricao": "colher de cha", "gramas": 5 }
+      ]
+    },
+    {
+      "id": 63,
+      "nome": "Batata frita",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 291,
+      "proteina_g": 3.5,
+      "carboidrato_g": 40.3,
+      "gordura_g": 13.0,
+      "fibra_g": 3.0,
+      "sodio_mg": 160,
+      "calcio_mg": 9,
+      "ferro_mg": 0.7,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "porcao pequena", "gramas": 100 },
+        { "descricao": "porcao media", "gramas": 150 },
+        { "descricao": "porcao grande", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 64,
+      "nome": "Pao frances",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 300,
+      "proteina_g": 8.0,
+      "carboidrato_g": 58.6,
+      "gordura_g": 3.1,
+      "fibra_g": 2.3,
+      "sodio_mg": 536,
+      "calcio_mg": 24,
+      "ferro_mg": 0.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 50 },
+        { "descricao": "unidade media", "gramas": 80 },
+        { "descricao": "unidade grande", "gramas": 120 }
+      ]
+    },
+    {
+      "id": 65,
+      "nome": "Pao de forma integral",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 253,
+      "proteina_g": 9.4,
+      "carboidrato_g": 47.9,
+      "gordura_g": 3.8,
+      "fibra_g": 5.2,
+      "sodio_mg": 391,
+      "calcio_mg": 72,
+      "ferro_mg": 1.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 22 },
+        { "descricao": "fatia grossa", "gramas": 35 }
+      ]
+    },
+    {
+      "id": 66,
+      "nome": "Pao de forma branco",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 270,
+      "proteina_g": 7.9,
+      "carboidrato_g": 52.5,
+      "gordura_g": 3.6,
+      "fibra_g": 1.9,
+      "sodio_mg": 420,
+      "calcio_mg": 60,
+      "ferro_mg": 1.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 22 },
+        { "descricao": "fatia grossa", "gramas": 35 }
+      ]
+    },
+    {
+      "id": 67,
+      "nome": "Macarrao espaguete cozido",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 132,
+      "proteina_g": 5.0,
+      "carboidrato_g": 26.0,
+      "gordura_g": 0.5,
+      "fibra_g": 1.6,
+      "sodio_mg": 1,
+      "calcio_mg": 7,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "porcao pequena", "gramas": 120 },
+        { "descricao": "porcao media", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 68,
+      "nome": "Farinha de mandioca crua",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 361,
+      "proteina_g": 1.6,
+      "carboidrato_g": 87.0,
+      "gordura_g": 0.3,
+      "fibra_g": 6.5,
+      "sodio_mg": 5,
+      "calcio_mg": 11,
+      "ferro_mg": 1.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "colher de cha", "gramas": 5 }
+      ]
+    },
+    {
+      "id": 69,
+      "nome": "Fuba de milho",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 354,
+      "proteina_g": 7.5,
+      "carboidrato_g": 74.6,
+      "gordura_g": 2.7,
+      "fibra_g": 4.0,
+      "sodio_mg": 1,
+      "calcio_mg": 6,
+      "ferro_mg": 1.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "xicara", "gramas": 130 }
+      ]
+    },
+    {
+      "id": 70,
+      "nome": "Aveia em flocos",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 394,
+      "proteina_g": 13.9,
+      "carboidrato_g": 66.6,
+      "gordura_g": 8.5,
+      "fibra_g": 9.1,
+      "sodio_mg": 4,
+      "calcio_mg": 47,
+      "ferro_mg": 4.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "xicara de cha", "gramas": 90 }
+      ]
+    },
+    {
+      "id": 71,
+      "nome": "Granola",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 400,
+      "proteina_g": 9.0,
+      "carboidrato_g": 65.0,
+      "gordura_g": 12.0,
+      "fibra_g": 5.0,
+      "sodio_mg": 80,
+      "calcio_mg": 50,
+      "ferro_mg": 2.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 20 },
+        { "descricao": "xicara de cha", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 72,
+      "nome": "Acucar refinado",
+      "categoria": "Acucares e doces",
+      "energia_kcal": 387,
+      "proteina_g": 0,
+      "carboidrato_g": 99.5,
+      "gordura_g": 0,
+      "fibra_g": 0,
+      "sodio_mg": 1,
+      "calcio_mg": 1,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 4 },
+        { "descricao": "colher de sopa", "gramas": 13 },
+        { "descricao": "xicara de cha", "gramas": 170 }
+      ]
+    },
+    {
+      "id": 73,
+      "nome": "Mel de abelha",
+      "categoria": "Acucares e doces",
+      "energia_kcal": 309,
+      "proteina_g": 0.3,
+      "carboidrato_g": 84.0,
+      "gordura_g": 0,
+      "fibra_g": 0,
+      "sodio_mg": 5,
+      "calcio_mg": 5,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 7 },
+        { "descricao": "colher de sopa", "gramas": 20 }
+      ]
+    },
+    {
+      "id": 74,
+      "nome": "Oleo de soja",
+      "categoria": "Oleos e gorduras",
+      "energia_kcal": 884,
+      "proteina_g": 0,
+      "carboidrato_g": 0,
+      "gordura_g": 100,
+      "fibra_g": 0,
+      "sodio_mg": 0,
+      "calcio_mg": 0,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 5 },
+        { "descricao": "colher de sopa", "gramas": 13 }
+      ]
+    },
+    {
+      "id": 75,
+      "nome": "Azeite de oliva extra virgem",
+      "categoria": "Oleos e gorduras",
+      "energia_kcal": 884,
+      "proteina_g": 0,
+      "carboidrato_g": 0,
+      "gordura_g": 100,
+      "fibra_g": 0,
+      "sodio_mg": 0,
+      "calcio_mg": 0,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 5 },
+        { "descricao": "colher de sopa", "gramas": 13 }
+      ]
+    },
+    {
+      "id": 76,
+      "nome": "Manteiga com sal",
+      "categoria": "Oleos e gorduras",
+      "energia_kcal": 726,
+      "proteina_g": 0.9,
+      "carboidrato_g": 0.1,
+      "gordura_g": 80.8,
+      "fibra_g": 0,
+      "sodio_mg": 825,
+      "calcio_mg": 17,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 5 },
+        { "descricao": "colher de sopa", "gramas": 13 },
+        { "descricao": "porcao (ponta faca)", "gramas": 8 }
+      ]
+    },
+    {
+      "id": 77,
+      "nome": "Margarina",
+      "categoria": "Oleos e gorduras",
+      "energia_kcal": 724,
+      "proteina_g": 0.5,
+      "carboidrato_g": 0.4,
+      "gordura_g": 80.8,
+      "fibra_g": 0,
+      "sodio_mg": 763,
+      "calcio_mg": 18,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de cha", "gramas": 5 },
+        { "descricao": "colher de sopa", "gramas": 13 }
+      ]
+    },
+    {
+      "id": 78,
+      "nome": "Cafe solavel sem acucar",
+      "categoria": "Bebidas",
+      "energia_kcal": 3,
+      "proteina_g": 0.4,
+      "carboidrato_g": 0.5,
+      "gordura_g": 0,
+      "fibra_g": 0,
+      "sodio_mg": 3,
+      "calcio_mg": 2,
+      "ferro_mg": 0.0,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "xicara de cafe (50ml)", "gramas": 50 },
+        { "descricao": "copo (200ml)", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 79,
+      "nome": "Suco de laranja natural",
+      "categoria": "Bebidas",
+      "energia_kcal": 45,
+      "proteina_g": 0.7,
+      "carboidrato_g": 10.4,
+      "gordura_g": 0.2,
+      "fibra_g": 0.2,
+      "sodio_mg": 1,
+      "calcio_mg": 11,
+      "ferro_mg": 0.2,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "copo pequeno (150ml)", "gramas": 150 },
+        { "descricao": "copo medio (200ml)", "gramas": 200 },
+        { "descricao": "copo grande (300ml)", "gramas": 300 }
+      ]
+    },
+    {
+      "id": 80,
+      "nome": "Amendoim torrado sem sal",
+      "categoria": "Nozes e sementes",
+      "energia_kcal": 581,
+      "proteina_g": 26.0,
+      "carboidrato_g": 19.7,
+      "gordura_g": 47.5,
+      "fibra_g": 7.8,
+      "sodio_mg": 4,
+      "calcio_mg": 61,
+      "ferro_mg": 2.6,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "porcao (30 unidades)", "gramas": 30 }
+      ]
+    },
+    {
+      "id": 81,
+      "nome": "Castanha de caju torrada",
+      "categoria": "Nozes e sementes",
+      "energia_kcal": 570,
+      "proteina_g": 17.0,
+      "carboidrato_g": 29.0,
+      "gordura_g": 46.0,
+      "fibra_g": 3.0,
+      "sodio_mg": 10,
+      "calcio_mg": 37,
+      "ferro_mg": 6.7,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 3 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "porcao (10 unidades)", "gramas": 30 }
+      ]
+    },
+    {
+      "id": 82,
+      "nome": "Castanha do para",
+      "categoria": "Nozes e sementes",
+      "energia_kcal": 643,
+      "proteina_g": 14.3,
+      "carboidrato_g": 11.7,
+      "gordura_g": 63.5,
+      "fibra_g": 7.5,
+      "sodio_mg": 1,
+      "calcio_mg": 160,
+      "ferro_mg": 2.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 5 },
+        { "descricao": "porcao (3 unidades)", "gramas": 15 }
+      ]
+    },
+    {
+      "id": 83,
+      "nome": "Proteina de soja texturizada cozida",
+      "categoria": "Leguminosas",
+      "energia_kcal": 53,
+      "proteina_g": 8.0,
+      "carboidrato_g": 6.0,
+      "gordura_g": 0.2,
+      "fibra_g": 2.4,
+      "sodio_mg": 2,
+      "calcio_mg": 60,
+      "ferro_mg": 2.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "xicara", "gramas": 160 }
+      ]
+    },
+    {
+      "id": 84,
+      "nome": "Queijo cottage",
+      "categoria": "Laticinios",
+      "energia_kcal": 100,
+      "proteina_g": 11.1,
+      "carboidrato_g": 3.4,
+      "gordura_g": 4.3,
+      "fibra_g": 0,
+      "sodio_mg": 380,
+      "calcio_mg": 76,
+      "ferro_mg": 0.1,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 85,
+      "nome": "Presunto cozido",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 157,
+      "proteina_g": 16.7,
+      "carboidrato_g": 0.5,
+      "gordura_g": 9.8,
+      "fibra_g": 0,
+      "sodio_mg": 860,
+      "calcio_mg": 6,
+      "ferro_mg": 0.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia fina", "gramas": 15 },
+        { "descricao": "fatia media", "gramas": 25 }
+      ]
+    },
+    {
+      "id": 86,
+      "nome": "Linguica de porco grelhada",
+      "categoria": "Carnes e derivados",
+      "energia_kcal": 276,
+      "proteina_g": 15.0,
+      "carboidrato_g": 0,
+      "gordura_g": 24.0,
+      "fibra_g": 0,
+      "sodio_mg": 900,
+      "calcio_mg": 12,
+      "ferro_mg": 1.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 60 },
+        { "descricao": "unidade media", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 87,
+      "nome": "Peixe salmao grelhado",
+      "categoria": "Pescados",
+      "energia_kcal": 180,
+      "proteina_g": 24.0,
+      "carboidrato_g": 0,
+      "gordura_g": 9.0,
+      "fibra_g": 0,
+      "sodio_mg": 55,
+      "calcio_mg": 12,
+      "ferro_mg": 0.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file pequeno", "gramas": 100 },
+        { "descricao": "file medio", "gramas": 150 },
+        { "descricao": "file grande", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 88,
+      "nome": "Camarao cozido",
+      "categoria": "Pescados",
+      "energia_kcal": 90,
+      "proteina_g": 20.3,
+      "carboidrato_g": 0,
+      "gordura_g": 1.1,
+      "fibra_g": 0,
+      "sodio_mg": 152,
+      "calcio_mg": 63,
+      "ferro_mg": 2.3,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade media", "gramas": 10 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 89,
+      "nome": "Farinha de trigo",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 361,
+      "proteina_g": 9.8,
+      "carboidrato_g": 75.1,
+      "gordura_g": 1.4,
+      "fibra_g": 2.3,
+      "sodio_mg": 2,
+      "calcio_mg": 18,
+      "ferro_mg": 1.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 13 },
+        { "descricao": "xicara de cha", "gramas": 120 }
+      ]
+    },
+    {
+      "id": 90,
+      "nome": "Biscoito agua e sal",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 420,
+      "proteina_g": 8.5,
+      "carboidrato_g": 70.0,
+      "gordura_g": 11.5,
+      "fibra_g": 2.0,
+      "sodio_mg": 600,
+      "calcio_mg": 20,
+      "ferro_mg": 1.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade", "gramas": 7 },
+        { "descricao": "porcao (5 unidades)", "gramas": 35 }
+      ]
+    },
+    {
+      "id": 91,
+      "nome": "Chocolate meio amargo",
+      "categoria": "Acucares e doces",
+      "energia_kcal": 525,
+      "proteina_g": 5.0,
+      "carboidrato_g": 58.0,
+      "gordura_g": 31.0,
+      "fibra_g": 5.0,
+      "sodio_mg": 20,
+      "calcio_mg": 40,
+      "ferro_mg": 3.0,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "quadradinho", "gramas": 5 },
+        { "descricao": "porcao (3 quadradinhos)", "gramas": 15 },
+        { "descricao": "barra pequena", "gramas": 25 }
+      ]
+    },
+    {
+      "id": 92,
+      "nome": "Caldo de feijao",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 38,
+      "proteina_g": 2.1,
+      "carboidrato_g": 6.5,
+      "gordura_g": 0.4,
+      "fibra_g": 1.5,
+      "sodio_mg": 250,
+      "calcio_mg": 15,
+      "ferro_mg": 0.8,
+      "unidades": [
+        { "descricao": "mililitro", "gramas": 1 },
+        { "descricao": "concha", "gramas": 80 },
+        { "descricao": "copo (200ml)", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 93,
+      "nome": "Feijoada",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 134,
+      "proteina_g": 8.0,
+      "carboidrato_g": 8.5,
+      "gordura_g": 7.5,
+      "fibra_g": 3.5,
+      "sodio_mg": 380,
+      "calcio_mg": 35,
+      "ferro_mg": 2.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "concha", "gramas": 100 },
+        { "descricao": "porcao media", "gramas": 200 }
+      ]
+    },
+    {
+      "id": 94,
+      "nome": "Frango a passarinho frito",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 270,
+      "proteina_g": 22.0,
+      "carboidrato_g": 3.5,
+      "gordura_g": 18.5,
+      "fibra_g": 0,
+      "sodio_mg": 220,
+      "calcio_mg": 10,
+      "ferro_mg": 0.8,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "pedaco pequeno", "gramas": 40 },
+        { "descricao": "pedaco medio", "gramas": 70 }
+      ]
+    },
+    {
+      "id": 95,
+      "nome": "Carne moida refogada",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 218,
+      "proteina_g": 21.0,
+      "carboidrato_g": 0,
+      "gordura_g": 14.0,
+      "fibra_g": 0,
+      "sodio_mg": 150,
+      "calcio_mg": 10,
+      "ferro_mg": 2.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 25 },
+        { "descricao": "porcao", "gramas": 100 }
+      ]
+    },
+    {
+      "id": 96,
+      "nome": "Tapioca",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 346,
+      "proteina_g": 0.2,
+      "carboidrato_g": 85.6,
+      "gordura_g": 0.2,
+      "fibra_g": 1.2,
+      "sodio_mg": 2,
+      "calcio_mg": 10,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "colher de sopa", "gramas": 15 },
+        { "descricao": "unidade media (disco)", "gramas": 40 },
+        { "descricao": "unidade grande (disco)", "gramas": 70 }
+      ]
+    },
+    {
+      "id": 97,
+      "nome": "Cuscuz de milho cozido",
+      "categoria": "Cereais e derivados",
+      "energia_kcal": 95,
+      "proteina_g": 2.0,
+      "carboidrato_g": 21.0,
+      "gordura_g": 0.5,
+      "fibra_g": 1.5,
+      "sodio_mg": 200,
+      "calcio_mg": 5,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "fatia media", "gramas": 100 },
+        { "descricao": "fatia grossa", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 98,
+      "nome": "Pamonha",
+      "categoria": "Preparacoes e receitas",
+      "energia_kcal": 180,
+      "proteina_g": 3.0,
+      "carboidrato_g": 30.0,
+      "gordura_g": 5.0,
+      "fibra_g": 1.0,
+      "sodio_mg": 100,
+      "calcio_mg": 10,
+      "ferro_mg": 0.5,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 100 },
+        { "descricao": "unidade media", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 99,
+      "nome": "Peixe merluza cozida",
+      "categoria": "Pescados",
+      "energia_kcal": 76,
+      "proteina_g": 16.0,
+      "carboidrato_g": 0,
+      "gordura_g": 1.0,
+      "fibra_g": 0,
+      "sodio_mg": 80,
+      "calcio_mg": 14,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "file pequeno", "gramas": 100 },
+        { "descricao": "file medio", "gramas": 150 }
+      ]
+    },
+    {
+      "id": 100,
+      "nome": "Banana da terra cozida",
+      "categoria": "Frutas",
+      "energia_kcal": 116,
+      "proteina_g": 0.9,
+      "carboidrato_g": 30.6,
+      "gordura_g": 0.1,
+      "fibra_g": 2.3,
+      "sodio_mg": 3,
+      "calcio_mg": 4,
+      "ferro_mg": 0.4,
+      "unidades": [
+        { "descricao": "grama", "gramas": 1 },
+        { "descricao": "unidade pequena", "gramas": 80 },
+        { "descricao": "unidade media", "gramas": 120 },
+        { "descricao": "fatia", "gramas": 30 }
+      ]
+    }
+  ]
+}
