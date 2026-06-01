@@ -27,7 +27,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   final TextEditingController _ferroCtrl = TextEditingController();
 
   // --- Estado da tela ---
-  String? _categoriaSelecionada;
+  List<String> _categoriasSelecionadas = [];
   String? _tipoSelecionado;
   String? _nutriScore;
   bool _isLoading = false;
@@ -49,7 +49,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   Map<String, double> _valoresPor100g = {};
 
   // --- Listas de opções ---
-  final List<String> _categorias = ['Café', 'Almoço', 'Janta'];
+  final List<String> _categorias = ['Café da manhã', 'Almoço', 'Lanche', 'Janta'];
   final List<String> _tipos = [
     'Bebida',
     'Proteína',
@@ -124,9 +124,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
 
           final String catTaco =
               alimentoEncontrado['categoria']?.toString().trim() ?? '';
-          if (_categorias.contains(catTaco)) {
-            _categoriaSelecionada = catTaco;
-          }
+          // Categoria do TACO não mapeia para as refeições, manter seleção manual
 
           _autoMapearTipo([catTaco]);
 
@@ -355,7 +353,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   // =========================================================
   Future<void> _salvarAlimento() async {
     if (_nomeController.text.isEmpty ||
-        _categoriaSelecionada == null ||
+        _categoriasSelecionadas.isEmpty ||
         _tipoSelecionado == null) {
       _mostrarSnack('Por favor, preencha nome, categoria e tipo.');
       return;
@@ -367,7 +365,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
     final novoAlimento = {
       'nome': _nomeController.text,
       'foto': _fotoController.text,
-      'categoria': _categoriaSelecionada,
+      'categoria': _categoriasSelecionadas.join(', '),
       'tipo': _tipoSelecionado,
       'calorias': parseDouble(_caloriasCtrl),
       'proteinas': parseDouble(_proteinasCtrl),
@@ -514,17 +512,49 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
             ),
             const SizedBox(height: 16),
 
-            // --- Dropdown Categoria ---
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Categoria',
-                border: OutlineInputBorder(),
+            // --- Multi-Select Categoria (refeição) ---
+            InputDecorator(
+              decoration: InputDecoration(
+                labelText: 'Categoria (refeição)',
+                border: const OutlineInputBorder(),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                errorText: _categoriasSelecionadas.isEmpty ? null : null,
               ),
-              initialValue: _categoriaSelecionada,
-              items: _categorias
-                  .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                  .toList(),
-              onChanged: (val) => setState(() => _categoriaSelecionada = val),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: _categorias.map((cat) {
+                  final isSelected = _categoriasSelecionadas.contains(cat);
+                  return FilterChip(
+                    label: Text(
+                      cat,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : purplePrimary,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      setState(() {
+                        if (selected) {
+                          _categoriasSelecionadas.add(cat);
+                        } else {
+                          _categoriasSelecionadas.remove(cat);
+                        }
+                      });
+                    },
+                    selectedColor: purplePrimary,
+                    checkmarkColor: Colors.white,
+                    backgroundColor: purpleLight,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: isSelected ? purplePrimary : purplePrimary.withValues(alpha: 0.3),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 16),
 
@@ -545,6 +575,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
                   .toList(),
               onChanged: (val) => setState(() => _tipoSelecionado = val),
             ),
+            const SizedBox(height: 16),
             // --- Dropdown Unidade de Medida ---
             if (_unidadesDisponiveis.isNotEmpty) ...[
               DropdownButtonFormField<Map<String, dynamic>>(
