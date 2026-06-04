@@ -101,9 +101,37 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
   // =========================================================
   // LÓGICA DE BUSCA (TACO + API)
   // =========================================================
+  String _normalizeString(String text) {
+    var withDia = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ';
+    var withoutDia = 'AAAAAAACEEEEIIIIDNOOOOOOUUUUYaaaaaaaceeeeiiiidnoooooouuuuyby';
+    for (int i = 0; i < withDia.length; i++) {
+      text = text.replaceAll(withDia[i], withoutDia[i]);
+    }
+    return text.toLowerCase().trim();
+  }
+
+  void _limparCamposNutricionais() {
+    _caloriasCtrl.clear();
+    _proteinasCtrl.clear();
+    _carboidratosCtrl.clear();
+    _gordurasTotaisCtrl.clear();
+    _sodioCtrl.clear();
+    _calcioCtrl.clear();
+    _ferroCtrl.clear();
+    _valoresPor100g = {};
+  }
+
+  // =========================================================
+  // LÓGICA DE BUSCA (TACO + API)
+  // =========================================================
   Future<void> _buscarDadosDaApi(String nome) async {
     if (nome.trim().isEmpty) return;
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _tipoSelecionado = null;
+      _nutriScore = null;
+      _limparCamposNutricionais();
+    });
 
     try {
       // 1. Tenta buscar no arquivo TACO local primeiro
@@ -112,9 +140,12 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
       final Map<String, dynamic> jsonData = jsonDecode(jsonString);
       final List<dynamic> alimentosTaco = jsonData['alimentos'];
 
+      final String searchNormalized = _normalizeString(nome);
       final alimentoEncontrado = alimentosTaco.firstWhere(
-        (item) =>
-            item['nome'].toString().toLowerCase().contains(nome.toLowerCase()),
+        (item) {
+          final String itemNomeNormalized = _normalizeString(item['nome'].toString());
+          return itemNomeNormalized.contains(searchNormalized);
+        },
         orElse: () => null,
       );
 
@@ -299,7 +330,7 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
 
   void _autoMapearTipo(List<String> tags) {
     const mapeamento = {
-      'Bebida': ['en:beverages', 'drink', 'suco', 'juice', 'water', 'milk'],
+      'Bebida': ['en:beverages', 'drink', 'suco', 'juice', 'water', 'milk', 'bebida', 'leite'],
       'Proteína': [
         'en:meats',
         'en:fish',
@@ -308,7 +339,9 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
         'frango',
         'peixe',
         'ovo',
-        'queijo'
+        'queijo',
+        'pescado',
+        'laticinio'
       ],
       'Carboidrato': [
         'en:breads',
@@ -317,16 +350,21 @@ class _NovoAlimentoScreenState extends State<NovoAlimentoScreen>
         'arroz',
         'massa',
         'farinha',
-        'bread'
+        'bread',
+        'cereal',
+        'tubérculo',
+        'tuberculo'
       ],
       'Fruta': ['en:fruits', 'fruta', 'fruit'],
       'Grão': [
         'en:legumes',
         'en:cereals',
         'feijão',
+        'feijao',
         'lentilha',
         'aveia',
-        'grain'
+        'grain',
+        'leguminosa'
       ],
     };
 
