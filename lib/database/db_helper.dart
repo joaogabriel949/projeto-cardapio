@@ -127,8 +127,9 @@ class DatabaseHelper {
       );
     }
     if (oldVersion < 4) {
-      // Recria a tabela para limpar colunas e padronizar com a versão 4
-      await db.execute('DROP TABLE IF EXISTS alimentos');
+      // SQLite não suporta DROP COLUMN — renomeia, recria e copia apenas as
+      // colunas da v4, preservando todos os dados do usuário.
+      await db.execute('ALTER TABLE alimentos RENAME TO alimentos_old');
       await db.execute('''
         CREATE TABLE alimentos(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,6 +148,14 @@ class DatabaseHelper {
           unidade_medida TEXT
         )
       ''');
+      await db.execute('''
+        INSERT INTO alimentos (id, nome, foto, categoria, tipo, calorias, proteinas,
+          carboidratos, gorduras_totais, sodio, calcio, ferro, nutri_score, unidade_medida)
+        SELECT id, nome, foto, categoria, tipo, calorias, proteinas,
+          carboidratos, gorduras_totais, sodio, calcio, ferro, nutri_score, unidade_medida
+        FROM alimentos_old
+      ''');
+      await db.execute('DROP TABLE alimentos_old');
     }
   }
 
@@ -191,6 +200,11 @@ class DatabaseHelper {
     return await db.insert('usuarios', usuario);
   }
 
+  Future<List<Map<String, dynamic>>> getTodosUsuarios() async {
+    Database db = await database;
+    return await db.query('usuarios', orderBy: 'nome ASC');
+  }
+
   Future<List<Map<String, dynamic>>> getUsuarioPorNome(String nome) async {
     Database db = await database;
     return await db.query(
@@ -205,6 +219,29 @@ class DatabaseHelper {
     return await db.insert('cardapios', cardapio);
   }
 
+  Future<List<Map<String, dynamic>>> getTodosCardapios() async {
+    Database db = await database;
+    final result = await db.rawQuery('''
+      SELECT
+        c.id,
+        c.usuario_id,
+        u.nome  AS paciente_nome,
+        c.cafe_id,
+        a1.nome AS cafe_nome,
+        c.almoco_id,
+        a2.nome AS almoco_nome,
+        c.janta_id,
+        a3.nome AS janta_nome
+      FROM cardapios c
+      LEFT JOIN usuarios   u  ON u.id  = c.usuario_id
+      LEFT JOIN alimentos  a1 ON a1.id = c.cafe_id
+      LEFT JOIN alimentos  a2 ON a2.id = c.almoco_id
+      LEFT JOIN alimentos  a3 ON a3.id = c.janta_id
+      ORDER BY c.id DESC
+    ''');
+    return result;
+  }
+
   Future<List<Map<String, dynamic>>> getCardapiosPorUsuario(
       int usuarioId) async {
     Database db = await database;
@@ -213,5 +250,13 @@ class DatabaseHelper {
       where: 'usuario_id = ?',
       whereArgs: [usuarioId],
     );
+  }
+
+  // Para uso exclusivo em testes — fecha, deleta e reseta a instância do banco.
+  static Future<void> resetDatabase() async {
+    await _database?.close();
+    _database = null;
+    final dbPath = await getDatabasesPath();
+    await deleteDatabase(join(dbPath, 'nutri_app.db'));
   }
 }
