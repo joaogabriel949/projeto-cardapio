@@ -4,6 +4,8 @@ import 'login_screen.dart';
 import 'lista_alimentos_screen.dart';
 import 'criar_cardapio_screen.dart';
 import 'cardapios_salvos_screen.dart';
+import 'novo_paciente_screen.dart';
+import 'buscar_usuarios_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,7 +42,14 @@ class HomeScreen extends StatelessWidget {
               title: 'Novo Paciente',
               subtitle: 'Cadastrar perfil',
               icon: Icons.person_add_alt_1,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NovoPacienteScreen(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 12),
             _buildActionCard(
@@ -80,7 +89,14 @@ class HomeScreen extends StatelessWidget {
               title: 'Buscar Usuários',
               subtitle: 'Histórico e perfis',
               icon: Icons.people_outline,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BuscarUsuariosScreen(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 12),
             _buildActionCard(
