@@ -13,7 +13,6 @@ class CardapioController extends ChangeNotifier {
   String restricoes     = '';
   String infoAdicionais = '';
 
-  // ─── Refeições padrão pré-populadas ──────────────────────────────────────
   final List<RefeicaoModel> refeicoes = [
     RefeicaoModel(nome: 'Café da Manhã', horario: '07:00', ordem: 0),
     RefeicaoModel(nome: 'Almoço',        horario: '12:00', ordem: 1),
@@ -21,22 +20,24 @@ class CardapioController extends ChangeNotifier {
     RefeicaoModel(nome: 'Jantar',        horario: '19:00', ordem: 3),
   ];
 
+  final List<RefeicaoItemModel> itensAvulsos = [];
+
   // ─── Estado ───────────────────────────────────────────────────────────────
   bool    isLoading    = false;
   String? errorMessage;
 
   // ─── Totais em tempo real ─────────────────────────────────────────────────
-  double get totalCalorias     => refeicoes.fold(0, (s, r) => s + r.totalCalorias);
-  double get totalProteinas    => refeicoes.fold(0, (s, r) => s + r.totalProteinas);
-  double get totalCarboidratos => refeicoes.fold(0, (s, r) => s + r.totalCarboidratos);
-  double get totalGorduras     => refeicoes.fold(0, (s, r) => s + r.totalGorduras);
-  double get totalSodio        => refeicoes.fold(0, (s, r) => s + r.totalSodio);
+  double get totalCalorias     => refeicoes.fold(0.0, (s, r) => s + r.totalCalorias) + itensAvulsos.fold(0.0, (s, i) => s + i.caloriasCalculadas);
+  double get totalProteinas    => refeicoes.fold(0.0, (s, r) => s + r.totalProteinas) + itensAvulsos.fold(0.0, (s, i) => s + i.proteinasCalculadas);
+  double get totalCarboidratos => refeicoes.fold(0.0, (s, r) => s + r.totalCarboidratos) + itensAvulsos.fold(0.0, (s, i) => s + i.carboidratosCalculados);
+  double get totalGorduras     => refeicoes.fold(0.0, (s, r) => s + r.totalGorduras) + itensAvulsos.fold(0.0, (s, i) => s + i.gordurasCalculadas);
+  double get totalSodio        => refeicoes.fold(0.0, (s, r) => s + r.totalSodio) + itensAvulsos.fold(0.0, (s, i) => s + i.sodioCalculado);
 
   int get totalItens =>
-      refeicoes.fold(0, (s, r) => s + r.itens.length);
+      refeicoes.fold(0, (s, r) => s + r.itens.length) + itensAvulsos.length;
 
   bool get podesSalvar =>
-      nome.isNotEmpty && refeicoes.any((r) => r.itens.isNotEmpty);
+      nome.trim().isNotEmpty && (refeicoes.any((r) => r.itens.isNotEmpty) || itensAvulsos.isNotEmpty);
 
   // ─── Operações sobre refeições ────────────────────────────────────────────
 
@@ -87,6 +88,26 @@ class CardapioController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void adicionarItemAvulso(AlimentoModel alimento, {double quantidade = 100.0, String unidade = 'g'}) {
+    itensAvulsos.add(RefeicaoItemModel(
+      alimento: alimento,
+      quantidade: quantidade,
+      unidade: unidade,
+    ));
+    notifyListeners();
+  }
+
+  void atualizarQuantidadeAvulso(int itemIndex, double quantidade) {
+    if (quantidade <= 0) return;
+    itensAvulsos[itemIndex].quantidade = quantidade;
+    notifyListeners();
+  }
+
+  void removerItemAvulso(int itemIndex) {
+    itensAvulsos.removeAt(itemIndex);
+    notifyListeners();
+  }
+
   // ─── Salvar ───────────────────────────────────────────────────────────────
 
   Future<int?> salvarCardapio() async {
@@ -98,7 +119,7 @@ class CardapioController extends ChangeNotifier {
 
     try {
       final cardapio = CardapioModel(
-        nome:           nome,
+        nome:           nome.trim(),
         dataCriacao:    DateTime.now().toIso8601String(),
         observacoes:    observacoes.isEmpty    ? null : observacoes,
         instrucoes:     instrucoes.isEmpty     ? null : instrucoes,
@@ -106,6 +127,7 @@ class CardapioController extends ChangeNotifier {
         infoAdicionais: infoAdicionais.isEmpty ? null : infoAdicionais,
         status:         'finalizado',
         refeicoes:      refeicoes,
+        itensAvulsos:   itensAvulsos,
       );
       return await _db.salvarCardapioCompleto(cardapio);
     } catch (e) {
@@ -127,6 +149,7 @@ class CardapioController extends ChangeNotifier {
     restricoes     = '';
     infoAdicionais = '';
     for (final r in refeicoes) { r.itens.clear(); }
+    itensAvulsos.clear();
     errorMessage = null;
     notifyListeners();
   }

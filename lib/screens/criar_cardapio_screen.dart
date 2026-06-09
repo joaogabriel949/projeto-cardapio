@@ -240,39 +240,217 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
 
   Widget _buildAbaRefeicoes() {
     final refs = _ctrl.refeicoes;
+    final avulsos = _ctrl.itensAvulsos;
 
-    if (refs.isEmpty) {
+    if (refs.isEmpty && avulsos.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.restaurant, size: 64, color: Colors.grey.shade300),
             const SizedBox(height: 16),
-            Text('Nenhuma refeição',
+            Text('Nenhum alimento cadastrado',
                 style: TextStyle(
                     fontSize: 16, color: Colors.grey.shade500)),
             const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _mostrarDialogNovaRefeicao,
-              icon: const Icon(Icons.add),
-              label: const Text('Adicionar Refeição'),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: _primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => _abrirSeletor(-1),
+                  icon: const Icon(Icons.fastfood),
+                  label: const Text('Adicionar Alimento'),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: _primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                ),
+                const SizedBox(width: 12),
+                OutlinedButton.icon(
+                  onPressed: _mostrarDialogNovaRefeicao,
+                  icon: const Icon(Icons.add, color: _primary),
+                  label: const Text('Nova Refeição', style: TextStyle(color: _primary)),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: _primary),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       );
     }
 
-    return ReorderableListView.builder(
+    return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
-      itemCount: refs.length,
-      onReorder: _ctrl.reordenarRefeicoes,
-      itemBuilder: (ctx, i) =>
-          _cardRefeicao(refs[i], i, key: ValueKey('ref_$i')),
+      children: [
+        if (avulsos.isNotEmpty)
+          _cardAvulsos(avulsos),
+        
+        ReorderableListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: refs.length,
+          onReorder: _ctrl.reordenarRefeicoes,
+          itemBuilder: (ctx, i) =>
+              _cardRefeicao(refs[i], i, key: ValueKey('ref_$i')),
+        ),
+
+        const SizedBox(height: 24),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () => _abrirSeletor(-1),
+                icon: const Icon(Icons.fastfood, color: _primary),
+                label: const Text('Alimento Avulso', style: TextStyle(color: _primary)),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: _mostrarDialogNovaRefeicao,
+                icon: const Icon(Icons.add),
+                label: const Text('Nova Refeição'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _primary,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _cardAvulsos(List<RefeicaoItemModel> avulsos) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            color: Colors.orange.shade600,
+            child: Row(
+              children: [
+                const Icon(Icons.fastfood, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    'Itens Avulsos',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '${avulsos.fold(0.0, (s, i) => s + i.caloriasCalculadas).toStringAsFixed(0)} kcal',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: avulsos.length,
+            separatorBuilder: (_, __) =>
+                const Divider(height: 1, indent: 60),
+            itemBuilder: (ctx, itemIdx) =>
+                _tilItemAvulso(avulsos[itemIdx], itemIdx),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tilItemAvulso(RefeicaoItemModel item, int itemIdx) {
+    final foto = item.alimento.foto ?? '';
+    final temFoto = foto.startsWith('http');
+
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+      leading: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.orange.shade100,
+        backgroundImage: temFoto ? NetworkImage(foto) : null,
+        child: !temFoto
+            ? Icon(Icons.fastfood, color: Colors.orange.shade600, size: 18)
+            : null,
+      ),
+      title: Text(
+        item.alimento.nome,
+        style: const TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 13),
+      ),
+      subtitle: Text(
+        '${item.caloriasCalculadas.toStringAsFixed(0)} kcal · '
+        'P ${item.proteinasCalculadas.toStringAsFixed(1)}g · '
+        'C ${item.carboidratosCalculados.toStringAsFixed(1)}g · '
+        'G ${item.gordurasCalculadas.toStringAsFixed(1)}g',
+        style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 68,
+            child: TextFormField(
+              initialValue: item.quantidade.toStringAsFixed(0),
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 13, fontWeight: FontWeight.bold),
+              decoration: InputDecoration(
+                suffixText: item.unidade,
+                suffixStyle: const TextStyle(fontSize: 10),
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 6, vertical: 6),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.orange.shade600, width: 2),
+                ),
+              ),
+              onChanged: (v) {
+                final q = double.tryParse(v);
+                if (q != null && q > 0) {
+                  _ctrl.atualizarQuantidadeAvulso(itemIdx, q);
+                }
+              },
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () => _ctrl.removerItemAvulso(itemIdx),
+            child: const Icon(Icons.close,
+                color: Colors.red, size: 18),
+          ),
+        ],
+      ),
     );
   }
 
@@ -432,7 +610,7 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
               style: const TextStyle(
                   fontSize: 13, fontWeight: FontWeight.bold),
               decoration: InputDecoration(
-                suffixText: 'g',
+                suffixText: item.unidade,
                 suffixStyle: const TextStyle(fontSize: 10),
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
@@ -478,15 +656,17 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
           const SizedBox(height: 22),
           _titulo('🍽️ Por Refeição'),
           const SizedBox(height: 12),
+          if (_ctrl.itensAvulsos.isNotEmpty)
+            _cardResumoAvulsos(),
           ..._ctrl.refeicoes
               .where((r) => r.itens.isNotEmpty)
               .map(_cardResumoRefeicao),
-          if (_ctrl.refeicoes.every((r) => r.itens.isEmpty))
+          if (_ctrl.refeicoes.every((r) => r.itens.isEmpty) && _ctrl.itensAvulsos.isEmpty)
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Text(
-                  'Adicione alimentos nas refeições\npara ver o resumo',
+                  'Adicione alimentos no cardápio\npara ver o resumo',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.grey.shade400, fontSize: 14),
@@ -617,7 +797,43 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
             leading: const Icon(Icons.fiber_manual_record,
                 size: 8, color: Colors.grey),
             title: Text(
-              '${item.alimento.nome}  —  ${item.quantidade.toStringAsFixed(0)}g',
+              '${item.alimento.nome}  —  ${item.quantidade.toStringAsFixed(0)}${item.unidade}',
+              style: const TextStyle(fontSize: 13),
+            ),
+            trailing: Text(
+              '${item.caloriasCalculadas.toStringAsFixed(0)} kcal',
+              style: const TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _cardResumoAvulsos() {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ExpansionTile(
+        leading: Icon(Icons.fastfood, color: Colors.orange.shade600),
+        title: const Text('Itens Avulsos',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(
+          '${_ctrl.itensAvulsos.fold(0.0, (s, i) => s + i.caloriasCalculadas).toStringAsFixed(0)} kcal · '
+          '${_ctrl.itensAvulsos.length} alimento${_ctrl.itensAvulsos.length != 1 ? 's' : ''}',
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+        ),
+        children: _ctrl.itensAvulsos.map((item) {
+          return ListTile(
+            dense: true,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 24),
+            leading: const Icon(Icons.fiber_manual_record,
+                size: 8, color: Colors.grey),
+            title: Text(
+              '${item.alimento.nome}  —  ${item.quantidade.toStringAsFixed(0)}${item.unidade}',
               style: const TextStyle(fontSize: 13),
             ),
             trailing: Text(
@@ -662,7 +878,7 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
     }
     if (!_ctrl.podesSalvar) {
       _snack(
-        'Adicione pelo menos um alimento em alguma refeição.',
+        'Adicione pelo menos um alimento ao cardápio.',
         cor: Colors.orange,
       );
       return;
@@ -685,8 +901,13 @@ class _CriarCardapioScreenState extends State<CriarCardapioScreen>
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => SeletorAlimentosBottomSheet(
-        onAlimentoSelecionado: (alimento, quantidade) =>
-            _ctrl.adicionarItem(refIdx, alimento, quantidade: quantidade),
+        onAlimentoSelecionado: (alimento, quantidade, unidade) {
+          if (refIdx == -1) {
+            _ctrl.adicionarItemAvulso(alimento, quantidade: quantidade, unidade: unidade);
+          } else {
+            _ctrl.adicionarItem(refIdx, alimento, quantidade: quantidade, unidade: unidade);
+          }
+        },
       ),
     );
   }

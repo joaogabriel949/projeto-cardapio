@@ -18,7 +18,7 @@ class DatabaseHelper {
     final path = join(await getDatabasesPath(), 'nutri_app.db');
     return openDatabase(
       path,
-      version: 5,
+      version: 6,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
       onConfigure: (db) async {
@@ -117,6 +117,23 @@ class DatabaseHelper {
     )
   ''';
 
+  static const _sqlCardapioItens = '''
+    CREATE TABLE IF NOT EXISTS cardapio_itens(
+      id                INTEGER PRIMARY KEY AUTOINCREMENT,
+      cardapio_id       INTEGER NOT NULL,
+      alimento_id       INTEGER NOT NULL,
+      quantidade        REAL NOT NULL DEFAULT 100.0,
+      unidade           TEXT NOT NULL DEFAULT 'g',
+      calorias_calc     REAL,
+      proteinas_calc    REAL,
+      carboidratos_calc REAL,
+      gorduras_calc     REAL,
+      sodio_calc        REAL,
+      FOREIGN KEY (cardapio_id) REFERENCES cardapios(id) ON DELETE CASCADE,
+      FOREIGN KEY (alimento_id) REFERENCES alimentos(id)
+    )
+  ''';
+
   // ─── Criação ───────────────────────────────────────────────────────────────
 
   Future<void> _onCreate(Database db, int version) async {
@@ -126,6 +143,7 @@ class DatabaseHelper {
     await db.execute(_sqlCardapios);
     await db.execute(_sqlRefeicoes);
     await db.execute(_sqlRefeicaoItens);
+    await db.execute(_sqlCardapioItens);
   }
 
   // ─── Migração incremental ──────────────────────────────────────────────────
@@ -142,6 +160,9 @@ class DatabaseHelper {
       // Cria as novas tabelas relacionais
       await db.execute(_sqlRefeicoes);
       await db.execute(_sqlRefeicaoItens);
+    }
+    if (oldVersion < 6) {
+      await db.execute(_sqlCardapioItens);
     }
   }
 
@@ -215,6 +236,9 @@ class DatabaseHelper {
       (await database)
           .update('cardapios', data, where: 'id = ?', whereArgs: [id]);
 
+  Future<int> deleteCardapio(int id) async =>
+      (await database).delete('cardapios', where: 'id = ?', whereArgs: [id]);
+
   Future<List<Map<String, dynamic>>> getCardapios({int? usuarioId}) async {
     final db = await database;
     return db.query(
@@ -278,6 +302,18 @@ class DatabaseHelper {
         ORDER BY ri.id ASC
       ''', [refeicaoId]);
 
+  Future<List<Map<String, dynamic>>> getItensAvulsos(int cardapioId) async =>
+      (await database).rawQuery('''
+        SELECT ci.*, a.nome, a.foto, a.calorias, a.proteinas,
+              a.carboidratos, a.gorduras_totais, a.sodio,
+              a.calcio, a.ferro, a.nutri_score, a.unidade_medida,
+              a.categoria, a.tipo
+        FROM cardapio_itens ci
+        INNER JOIN alimentos a ON ci.alimento_id = a.id
+        WHERE ci.cardapio_id = ?
+        ORDER BY ci.id ASC
+      ''', [cardapioId]);
+
   // ─── CARDÁPIO COMPLETO (JOIN) ───────────────────────────────────────────────
 
   Future<Map<String, dynamic>?> getCardapioCompleto(int cardapioId) async {
@@ -296,6 +332,9 @@ class DatabaseHelper {
       refeicoesComItens.add(r);
     }
     cardapio['refeicoes'] = refeicoesComItens;
+    
+    cardapio['itens_avulsos'] = await getItensAvulsos(cardapioId);
+
     return cardapio;
   }
 
@@ -325,6 +364,16 @@ class DatabaseHelper {
 
           await txn.insert('refeicao_itens', itemMap);
         }
+      }
+
+      for (final item in cardapio.itensAvulsos) {
+        final itemMap = {
+          ...item.toMap(),
+          'cardapio_id': cardapioId,
+        };
+        // Remove refeicao_id if it exists from toMap
+        itemMap.remove('refeicao_id');
+        await txn.insert('cardapio_itens', itemMap);
       }
 
       return cardapioId;
