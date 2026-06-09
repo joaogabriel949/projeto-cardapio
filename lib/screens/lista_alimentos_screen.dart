@@ -10,7 +10,10 @@ class ListaAlimentosScreen extends StatefulWidget {
 }
 
 class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
-  late Future<List<Map<String, dynamic>>> _alimentosFuture;
+  List<Map<String, dynamic>> _todosAlimentos = [];
+  List<Map<String, dynamic>> _alimentosFiltrados = [];
+  bool _isLoading = true;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -18,8 +21,62 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
     _carregarAlimentos();
   }
 
-  void _carregarAlimentos() {
-    _alimentosFuture = DatabaseHelper().getAlimentos();
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _carregarAlimentos() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final alimentos = await DatabaseHelper().getAlimentos();
+      if (mounted) {
+        setState(() {
+          _todosAlimentos = alimentos;
+          _filtrarAlimentos(_searchController.text);
+        });
+      }
+    } catch (e) {
+      // Ignorar erro silenciosamente para simplificar ou mostrar log
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  String _removerAcentos(String str) {
+    var comAcento = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var semAcento = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (int i = 0; i < comAcento.length; i++) {
+      str = str.replaceAll(comAcento[i], semAcento[i]);
+    }
+    return str;
+  }
+
+  void _filtrarAlimentos(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _alimentosFiltrados = List.from(_todosAlimentos);
+      });
+      return;
+    }
+
+    final queryNormalizada = _removerAcentos(query.toLowerCase());
+
+    setState(() {
+      _alimentosFiltrados = _todosAlimentos.where((alimento) {
+        final nomeOriginal = alimento['nome'] ?? '';
+        final nomeNormalizado = _removerAcentos(nomeOriginal.toLowerCase());
+        return nomeNormalizado.contains(queryNormalizada);
+      }).toList();
+    });
   }
 
   Widget _buildFoto(String? foto) {
@@ -230,98 +287,102 @@ Gorduras: $gorduras g''';
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black87),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _alimentosFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Erro ao carregar os dados.'),
-            );
-          }
-
-          final alimentos = snapshot.data;
-
-          if (alimentos == null || alimentos.isEmpty) {
-            return Center(
-              child: Text(
-                'Nenhum alimento cadastrado ainda.',
-                style: textTheme.bodyLarge,
-              ),
-            );
-          }
-
-          return ListView.builder(
+      body: Column(
+        children: [
+          Padding(
             padding: const EdgeInsets.all(16.0),
-            itemCount: alimentos.length,
-            itemBuilder: (context, index) {
-              final alimento = alimentos[index];
-              final String nome = alimento['nome'] ?? 'Sem Nome';
-              final String categoria = alimento['categoria'] ?? 'Sem Categoria';
-              final String? foto = alimento['foto'];
-
-              return Card(
-                elevation: 2,
-                margin: const EdgeInsets.only(bottom: 12),
-                shape: RoundedRectangleBorder(
+            child: TextField(
+              controller: _searchController,
+              onChanged: _filtrarAlimentos,
+              decoration: InputDecoration(
+                hintText: 'Buscar alimento pelo nome',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: ListTile(
-                  onTap: () => _mostrarDetalhesNutricionais(context, alimento),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  leading: GestureDetector(
-                    onTap: () => _mostrarDetalhesNutricionais(context, alimento),
-                    child: _buildFoto(foto),
-                  ),
-                  title: Text(
-                    nome,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Categoria: $categoria',
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
+                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              ),
+            ),
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _alimentosFiltrados.isEmpty
+                    ? Center(
+                        child: Text(
+                          _todosAlimentos.isEmpty
+                              ? 'Nenhum alimento cadastrado ainda.'
+                              : 'Nenhum alimento encontrado.',
+                          style: textTheme.bodyLarge,
                         ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        itemCount: _alimentosFiltrados.length,
+                        itemBuilder: (context, index) {
+                          final alimento = _alimentosFiltrados[index];
+                          final String nome = alimento['nome'] ?? 'Sem Nome';
+                          final String categoria = alimento['categoria'] ?? 'Sem Categoria';
+                          final String? foto = alimento['foto'];
+
+                          return Card(
+                            elevation: 2,
+                            margin: const EdgeInsets.only(bottom: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              onTap: () => _mostrarDetalhesNutricionais(context, alimento),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              leading: GestureDetector(
+                                onTap: () => _mostrarDetalhesNutricionais(context, alimento),
+                                child: _buildFoto(foto),
+                              ),
+                              title: Text(
+                                nome,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Categoria: $categoria',
+                                    style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                  if (alimento['unidade_medida'] != null)
+                                    Text(
+                                      'Medição: ${alimento['unidade_medida']}',
+                                      style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.close, color: Colors.red),
+                                onPressed: () async {
+                                  // Confirmação (opcional) ou exclusão direta
+                                  await DatabaseHelper().deleteAlimento(alimento['id']);
+                                  _carregarAlimentos(); // Recarrega a lista e aplica o filtro
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('$nome excluído com sucesso!')),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      if (alimento['unidade_medida'] != null)
-                        Text(
-                          'Medição: ${alimento['unidade_medida']}',
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                          ),
-                        ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.red),
-                    onPressed: () async {
-                      // Confirmação (opcional) ou exclusão direta
-                      await DatabaseHelper().deleteAlimento(alimento['id']);
-                      setState(() {
-                        _carregarAlimentos(); // Recarrega a lista
-                      });
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('$nome excluído com sucesso!')),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
