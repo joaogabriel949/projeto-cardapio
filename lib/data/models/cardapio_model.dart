@@ -88,6 +88,7 @@ class CardapioModel {
   String?                  infoAdicionais;
   final String             status;
   final List<RefeicaoModel> refeicoes;
+  final List<RefeicaoItemModel> itensAvulsos;
 
   CardapioModel({
     this.id,
@@ -100,13 +101,15 @@ class CardapioModel {
     this.infoAdicionais,
     this.status = 'finalizado',
     List<RefeicaoModel>? refeicoes,
-  }) : refeicoes = refeicoes ?? [];
+    List<RefeicaoItemModel>? itensAvulsos,
+  }) : refeicoes = refeicoes ?? [],
+       itensAvulsos = itensAvulsos ?? [];
 
-  double get totalCalorias     => refeicoes.fold(0, (s, r) => s + r.totalCalorias);
-  double get totalProteinas    => refeicoes.fold(0, (s, r) => s + r.totalProteinas);
-  double get totalCarboidratos => refeicoes.fold(0, (s, r) => s + r.totalCarboidratos);
-  double get totalGorduras     => refeicoes.fold(0, (s, r) => s + r.totalGorduras);
-  double get totalSodio        => refeicoes.fold(0, (s, r) => s + r.totalSodio);
+  double get totalCalorias     => refeicoes.fold(0.0, (s, r) => s + r.totalCalorias) + itensAvulsos.fold(0.0, (s, i) => s + i.caloriasCalculadas);
+  double get totalProteinas    => refeicoes.fold(0.0, (s, r) => s + r.totalProteinas) + itensAvulsos.fold(0.0, (s, i) => s + i.proteinasCalculadas);
+  double get totalCarboidratos => refeicoes.fold(0.0, (s, r) => s + r.totalCarboidratos) + itensAvulsos.fold(0.0, (s, i) => s + i.carboidratosCalculados);
+  double get totalGorduras     => refeicoes.fold(0.0, (s, r) => s + r.totalGorduras) + itensAvulsos.fold(0.0, (s, i) => s + i.gordurasCalculadas);
+  double get totalSodio        => refeicoes.fold(0.0, (s, r) => s + r.totalSodio) + itensAvulsos.fold(0.0, (s, i) => s + i.sodioCalculado);
 
   Map<String, dynamic> toMap() => {
     if (id != null)         'id': id,

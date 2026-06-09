@@ -6,7 +6,7 @@ import '../../../../data/models/alimento_model.dart';
 // Bottom sheet para selecionar alimento e definir quantidade
 // ─────────────────────────────────────────────────────────────────────────────
 class SeletorAlimentosBottomSheet extends StatefulWidget {
-  final void Function(AlimentoModel alimento, double quantidade)
+  final void Function(AlimentoModel alimento, double quantidade, String unidade)
       onAlimentoSelecionado;
 
   const SeletorAlimentosBottomSheet({
@@ -69,8 +69,27 @@ class _SeletorAlimentosBottomSheetState
 
   void _abrirDialogQuantidade(Map<String, dynamic> alimentoMap) {
     final alimento  = AlimentoModel.fromMap(alimentoMap);
-    final ctrl      = TextEditingController(text: '100');
+    
     double quantidade = 100.0;
+    final rawUnidade = alimento.unidadeMedida?.trim() ?? '';
+
+    if (rawUnidade.isNotEmpty) {
+      final match = RegExp(r'^([\d\.,]+)\s*([a-zA-ZÀ-ÿ]+.*)$').firstMatch(rawUnidade);
+      if (match != null) {
+        quantidade = double.tryParse(match.group(1)!.replaceAll(',', '.')) ?? 100.0;
+      }
+    }
+
+    bool isBebida = alimento.tipo.toLowerCase() == 'bebida' || 
+                    rawUnidade.toLowerCase().contains('ml') || 
+                    rawUnidade.toLowerCase().contains('litro') ||
+                    rawUnidade.toLowerCase() == 'l';
+    
+    String unidade = isBebida ? 'ml' : 'g';
+
+    final ctrl = TextEditingController(text: quantidade == quantidade.roundToDouble() 
+        ? quantidade.toInt().toString() 
+        : quantidade.toString());
 
     showDialog(
       context: context,
@@ -116,7 +135,7 @@ class _SeletorAlimentosBottomSheetState
                     autofocus: true,
                     decoration: InputDecoration(
                       labelText: 'Quantidade',
-                      suffixText: 'g',
+                      suffixText: unidade,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       focusedBorder: OutlineInputBorder(
@@ -165,7 +184,7 @@ class _SeletorAlimentosBottomSheetState
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    widget.onAlimentoSelecionado(alimento, quantidade);
+                    widget.onAlimentoSelecionado(alimento, quantidade, unidade);
                     Navigator.pop(ctx);      // fecha dialog
                     Navigator.pop(context);  // fecha bottom sheet
                   },

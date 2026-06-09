@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../database/db_helper.dart';
 
 class CardapiosSalvosScreen extends StatefulWidget {
@@ -36,6 +37,78 @@ class _CardapiosSalvosScreenState extends State<CardapiosSalvosScreen> {
       }
     }
     return listaCompleta;
+  }
+
+  void _compartilharCardapio(Map<String, dynamic> cardapio) {
+    try {
+      final nome = cardapio['nome'] ?? 'Sem Nome';
+      final refeicoes = cardapio['refeicoes'] as List;
+
+      StringBuffer buffer = StringBuffer();
+      buffer.writeln('📋 Cardápio: $nome\n');
+
+      for (var refeicao in refeicoes) {
+        final nomeRefeicao = refeicao['nome'] ?? 'Refeição';
+        String icone = '🍽️';
+        if (nomeRefeicao.toLowerCase().contains('café') || nomeRefeicao.toLowerCase().contains('cafe')) {
+          icone = '☕';
+        } else if (nomeRefeicao.toLowerCase().contains('janta') || nomeRefeicao.toLowerCase().contains('ceia')) {
+          icone = '🌙';
+        }
+
+        buffer.writeln('$icone $nomeRefeicao');
+        
+        final itens = refeicao['itens'] as List;
+        if (itens.isEmpty) {
+          buffer.writeln('• Nenhum alimento');
+        } else {
+          for (var item in itens) {
+            final nomeItem = item['nome'] ?? 'Sem nome';
+            final qtde = (item['quantidade'] as num?)?.toStringAsFixed(0) ?? '100';
+            final und = item['unidade']?.toString() ?? 'g';
+            buffer.writeln('• $nomeItem - $qtde$und');
+          }
+        }
+        buffer.writeln();
+      }
+
+      Share.share(buffer.toString().trim());
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao compartilhar: $e')),
+        );
+      }
+    }
+  }
+
+  void _confirmarExclusao(BuildContext context, Map<String, dynamic> cardapio) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Excluir Cardápio'),
+        content: Text('Tem certeza que deseja excluir o cardápio "${cardapio['nome']}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(ctx).pop();
+              await DatabaseHelper().deleteCardapio(cardapio['id']);
+              _carregarTudo();
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cardápio excluído com sucesso!')),
+                );
+              }
+            },
+            child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -103,14 +176,27 @@ class _CardapiosSalvosScreenState extends State<CardapiosSalvosScreen> {
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF4A00E0)),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.edit_note, color: Colors.orange, size: 28),
-                            onPressed: () {
-                              // Aviso temporário de que o botão foi clicado
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('A preparar edição do Cardápio #${cardapio['id']}')),
-                              );
-                            },
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.share, color: Colors.blue, size: 28),
+                                onPressed: () => _compartilharCardapio(cardapio),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.edit_note, color: Colors.orange, size: 28),
+                                onPressed: () {
+                                  // Aviso temporário de que o botão foi clicado
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('A preparar edição do Cardápio #${cardapio['id']}')),
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete, color: Colors.red, size: 28),
+                                onPressed: () => _confirmarExclusao(context, cardapio),
+                              ),
+                            ],
                           ),
                         ],
                       ),

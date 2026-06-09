@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../database/db_helper.dart';
 
 class ListaAlimentosScreen extends StatefulWidget {
@@ -106,7 +107,16 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
                   ],
                 ),
                 const Divider(height: 30),
-                const Text('Informações Nutricionais', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Informações Nutricionais', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    IconButton(
+                      icon: const Icon(Icons.share, color: Colors.blue),
+                      onPressed: () => _compartilharAlimento(alimento),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 10),
                 Flexible(
                   child: SingleChildScrollView(
@@ -175,6 +185,37 @@ class _ListaAlimentosScreenState extends State<ListaAlimentosScreen> {
       case 'D': return Colors.orange;
       case 'E': return Colors.red;
       default: return Colors.grey;
+    }
+  }
+
+  void _compartilharAlimento(Map<String, dynamic> alimento) {
+    try {
+      final nome = alimento['nome'] ?? 'Sem Nome';
+      final categoria = alimento['categoria'] ?? 'Sem Categoria';
+      final tipo = alimento['tipo'] ?? 'Sem Tipo';
+      final calorias = alimento['calorias'] ?? '0';
+      final proteinas = alimento['proteinas'] ?? '0';
+      final carboidratos = alimento['carboidratos'] ?? '0';
+      final gorduras = alimento['gorduras_totais'] ?? '0';
+
+      final texto = '''🍎 Alimento: $nome
+
+Categoria: $categoria
+Tipo: $tipo
+
+Informações nutricionais:
+Calorias: $calorias kcal
+Proteínas: $proteinas g
+Carboidratos: $carboidratos g
+Gorduras: $gorduras g''';
+
+      Share.share(texto);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao compartilhar: $e')),
+        );
+      }
     }
   }
 
